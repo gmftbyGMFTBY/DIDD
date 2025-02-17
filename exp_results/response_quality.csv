@@ -1,4 +1,4 @@
-Model,Avg_Score,CriticEval_obj,CriticEval_sub,CriticBench,
+Model,Avg_Score,CriticEval_obj,CriticEval_sub,CriticBench
 low,2.35,49.82,4.06,1.2
 medium,5.11,36.15,4.19,43.15
 high,7.10,22.15,4.27,45.91

@@ -12,9 +12,10 @@ overall_file=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality/overall_re
 baseline_iter_0=/home/lt/ReNewPoNe/eval/CriticBench/src/framework/baseline/_home_lt_ReNewPoNe_framework_save_baseline_iter_5650_merge_hf/critique/result_02_16_15_27_09.jsonl
 baseline=/home/lt/ReNewPoNe/eval/CriticBench/src/framework/baseline_iter_0/_home_lt_ReNewPoNe_framework_save_baseline_iter_0_iter_7498_merge_hf/critique/result_02_16_15_27_04.jsonl
 baseline_iter_0_v2=/home/lt/ReNewPoNe/eval/CriticBench/src/framework/baseline_iter_0_v2/_home_lt_ReNewPoNe_framework_save_baseline_iter_0_v2_iter_9940_merge_hf/critique/result_02_16_20_45_50.jsonl
+baseline_autoj=/home/lt/ReNewPoNe/eval/CriticBench/src/framework/baseline_autoj/_home_lt_ReNewPoNe_baseline_save_autoj_ours_iter_3840_merge_hf/critique/result_02_17_09_46_28.jsonl
 
-files=($baseline)
-labels=(baseline)
+files=($baseline_autoj)
+labels=(baseline_autoj)
 
 for index in $(seq 0 0)
 do

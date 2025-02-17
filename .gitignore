@@ -4,3 +4,5 @@
 **/*.zip
 **/*.json
 **/*.jsonl
+**/*.txt
+!framework/gpt4_generation/few_shot_detail.json

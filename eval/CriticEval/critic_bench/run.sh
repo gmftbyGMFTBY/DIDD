@@ -11,7 +11,7 @@ then
         echo "Inference Objective Evaluation for Feedback Critique Task"
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline" --batch_size 16 --split $3 --obj True 
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_iter_0" --batch_size 16 --split $3 --obj True 
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_iter_0_v2" --batch_size 16 --split $3 --obj True 
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_autoj" --batch_size 16 --split $3 --obj True 
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/overall" --batch_size 16 --split $3 --obj True 
         #exit
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/low" --batch_size 16 --split $3 --obj True 
@@ -21,13 +21,14 @@ then
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/overall" --batch_size 16 --split $3 --obj True 
     else
         echo "Inference Subjective Evaluation for Feedback Critique Task"
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_autoj" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/low" --evaluation_dir "./response_quality" --batch_size 16 --split $3 --obj False
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v3/medium" --evaluation_dir "./response_quality" --batch_size 16 --split $3 --obj False &
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/high" --evaluation_dir "./response_quality" --batch_size 16 --split $3 --obj False &
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_v2/overall" --evaluation_dir "./response_quality" --batch_size 16 --split $3 --obj False &
 
         #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_iter_0_v2" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False
+        #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_iter_0_v2" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False
     fi
 elif [ $1 == 'correction' ];
 then

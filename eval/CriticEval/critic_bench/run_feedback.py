@@ -76,15 +76,16 @@ def evaluate_feedback_obj(
         for q in tables_obj_diff:
             tables_obj_diff[q].append([model])
 
-        if 'autoj-13b' == model or 'autoj' in model:
-            parse_score_func = autoj_parse_score_func
-        elif 'ultracm' == model or 'ultracm' in model or 'themis' in model or 'UltraCM' in model or 'promethues' in model:
-            parse_score_func = extract_score 
-        elif 'tigerscore' == model or 'tigerscore' in model:
-            parse_score_func = tigerscore_parse_score_func
-        else:
-            parse_score_func = extract_score
-            #parse_score_func = extract_decision
+        #if 'autoj-13b' == model or 'autoj' in model:
+        #    parse_score_func = autoj_parse_score_func
+        #elif 'ultracm' == model or 'ultracm' in model or 'themis' in model or 'UltraCM' in model or 'promethues' in model:
+        #    parse_score_func = extract_score 
+        #elif 'tigerscore' == model or 'tigerscore' in model:
+        #    parse_score_func = tigerscore_parse_score_func
+        #else:
+        #    parse_score_func = extract_score
+        #     #parse_score_func = extract_decision
+        parse_score_func = extract_score
 
         score, diff_resp_score = evalutor.evaluate(parse_score_func)
         tables_obj[-1].append(score)

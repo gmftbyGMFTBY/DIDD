@@ -277,6 +277,10 @@ if __name__ == "__main__":
             os.makedirs(os.path.join(args.root_path, f'iter_{args.iter_num}', subfolder_name))
         batch_chat_with_api(test_set, f'{args.root_path}/iter_{args.iter_num}/{subfolder_name}')
     elif args.mode == 'evaluate':
+        save_path =  f'{args.root_path}/iter_{args.iter_num}/{args.model_prediction_name}.json'
+        if os.path.exists(save_path) is True:
+            print(f'[!] found the generated file:', save_path)
+            exit()
         ########## 2. evaluate model performance on these test set
         model = OpenLLM(args.model_path, args.model_prompt, args.model_bsz)
         subfolder_name = f'test_set_gn_{args.gen_num}_fsn_{args.few_shot_num}'
