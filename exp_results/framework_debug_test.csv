@@ -1,5 +1,7 @@
 Model,CriticEval_obj,CriticEval_sub
 baseline,45.75,4.17
 baseline_iter_0_v2,47.31,4.28
-baseline_autoj,48.08,
-baseline_autoj_iter_0_v2,
+baseline_autoj,48.08,3.79
+baseline_autoj_iter_0_v2,,
+baseline_ultracm,56.78,
+baseline_ultracm_iter_0_v2,

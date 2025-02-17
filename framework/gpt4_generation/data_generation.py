@@ -309,7 +309,7 @@ if __name__ == "__main__":
             os.makedirs(os.path.join(args.root_path, f'iter_{args.iter_num}', 'meta_evaluation'))
         batch_chat_with_api_meta_evaluation(model_prediction, f'{args.root_path}/iter_{args.iter_num}/meta_evaluation', prompt_template)
     elif args.mode == 'train_set_construction':
-        failure_dis = json.load(open(f'{args.root_path}/iter_{args.iter_num}/{args.failure_dis_file}'))
+        failure_dis = json.load(open(args.failure_dis_file))
         failure_set = []
         for sample in failure_dis:
             nn = sample[0].split('-')

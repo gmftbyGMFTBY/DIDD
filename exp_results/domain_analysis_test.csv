@@ -1,0 +1,10 @@
+Model,CriticEval_obj,CriticEval_sub
+overall,23.06,
+nlp_tasks,43.52,
+general_communication,44.91,
+functional_writing,29.47
+creative_writing,36.69
+rewriting,20.45,
+summarization,44.47
+exam_question,21.61
+code,34.46

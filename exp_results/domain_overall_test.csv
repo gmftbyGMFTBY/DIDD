@@ -2,4 +2,6 @@ Model,CriticEval_obj,CriticEval_sub
 math_code,44.95,3.59
 chat_qa,25.99,3.53
 translation_summarization,32.57,4.21
+translation_summarization_e2,44.19,
+overall,39.77,3.76
 overall_v2,32.38,3.68
