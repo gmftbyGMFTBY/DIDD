@@ -22,16 +22,20 @@ creative_writing=/home/lt/ReNewPoNe/domain/save_analysis/creating_writing/iter_4
 functional_writing=/home/lt/ReNewPoNe/domain/save_analysis/functional_writing/iter_6000_merge_hf
 rewriting=/home/lt/ReNewPoNe/domain/save_analysis/rewriting/iter_2160_merge_hf
 
+##### repsonse quality analysis
+medium_v4=/home/lt/ReNewPoNe/response_quality/save_v4/medium_v4/iter_10356_merge_hf
+overall_v3=/home/lt/ReNewPoNe/response_quality/save_v4/overall_v3/iter_10350_merge_hf
+overall_v4=/home/lt/ReNewPoNe/response_quality/save_v4/overall_v4/iter_10330_merge_hf
 
-models=($code $exam_question $general_communication $summarization $creative_writing $functional_writing $rewriting)
-labels=(code exam_question general_communication summarization creative_writing functional_writing rewriting)
+models=($medium_v4 $overall_v3 $overall_v4)
+labels=(medium_v4 overall_v3 overall_v4)
 
-for index in $(seq 0 6)
+for index in $(seq 0 2)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+1))
+    index=$(($index+5))
     echo "Infer $model with $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir domain_analysis/$label &
+    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir response_quality_analysis/$label &
 done
 

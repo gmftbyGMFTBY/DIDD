@@ -24,10 +24,17 @@ creative_writing=/home/lt/ReNewPoNe/eval/CriticBench/src/domain_analysis/creativ
 functional_writing=/home/lt/ReNewPoNe/eval/CriticBench/src/domain_analysis/functional_writing/_home_lt_ReNewPoNe_domain_save_analysis_functional_writing_iter_6000_merge_hf/critique/result_02_17_17_57_32.jsonl
 rewriting=/home/lt/ReNewPoNe/eval/CriticBench/src/domain_analysis/rewriting/_home_lt_ReNewPoNe_domain_save_analysis_rewriting_iter_2160_merge_hf/critique/result_02_17_17_56_12.jsonl
 
-files=($code $exam_question $general_communication $summarization $creative_writing $functional_writing $rewriting)
-labels=(code exam_question general_communication summarization creative_writing functional_writing rewriting)
+##### response quality analysis
+medium_v4=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/medium_v4/_home_lt_ReNewPoNe_response_quality_save_v4_medium_v4_iter_10356_merge_hf/critique/result_02_17_20_27_58.jsonl
+overall_v3=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/overall_v3/_home_lt_ReNewPoNe_response_quality_save_v4_overall_v3_iter_10350_merge_hf/critique/result_02_17_20_27_07.jsonl
+overall_v4=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/overall_v4/_home_lt_ReNewPoNe_response_quality_save_v4_overall_v4_iter_10330_merge_hf/critique/result_02_17_20_26_01.jsonl
 
-for index in $(seq 0 6)
+#files=($code $exam_question $general_communication $summarization $creative_writing $functional_writing $rewriting)
+#labels=(code exam_question general_communication summarization creative_writing functional_writing rewriting)
+files=($medium_v4 $overall_v3 $overall_v4)
+labels=(medium_v4 overall_v3 overall_v4)
+
+for index in $(seq 0 2)
 do
     file=${files[$index]}
     label=${labels[$index]}
@@ -37,5 +44,5 @@ do
         --tasks Q \
         --prompt_type zs-crit-cot \
         --enable_code_execution \
-        --existed_crit_file $file > log/domain_analysis_$label.txt
+        --existed_crit_file $file > log/response_quality_analysis_$label.txt
 done
