@@ -1,0 +1,6 @@
+Model,CriticEval_obj,CriticEval_sub,CriticBench
+baseline,56.63,4.12,63.67
+baseline_iter_0,53.87,4.11,32.24
+baseline_iter_0_v2,55.44,4.28,65.11
+autoj_baseline,
+autoj_baseline_iter_0_v2,

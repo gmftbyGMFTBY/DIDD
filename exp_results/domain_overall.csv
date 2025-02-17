@@ -1,0 +1,6 @@
+Model,CriticEval_obj,CriticEval_sub,CriticBench
+math_code,39.48,3.71,42.23
+chat_qa,26.15,3.45,15.82
+translation_summarization,42.94,4.28,45.57
+overall,48.05,3.79,37.07
+overall_v2,48.83,4.44,48.45

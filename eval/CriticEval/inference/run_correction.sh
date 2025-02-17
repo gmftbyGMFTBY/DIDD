@@ -1,0 +1,154 @@
+#!/bin/bash
+
+
+ultracm_path=_cpfs02_llm_shared_public_lantian_exp_20240501_sft_7b_critique_ultracm_878_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_critic_ultracm_878_hf_ckpt
+autoj_path=_cpfs02_llm_shared_public_lantian_exp_20240501_sft_7b_critique_autoj_26_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_critic_autoj_26_hf_ckpt
+our_5_l1_resumm_path=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_385_epoch_2_0701_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_385_hf_ckpt
+
+# s1 series model's result
+#models=($our_5_l1_resumm_path $autoj_path $ultracm_path themis internlm2-7b-chat)
+models=(themis internlm2-7b-chat $our_5_l1_resumm_path $autoj_path $ultracm_path)
+
+# s2 series model's result
+#models=(_cpfs02_llm_shared_public_lantian_exp_s2_add_critictuning_v01rc1_s2_add_autoj_critic_349_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s2_add_critictuning_v01rc3_359_hf_ckpt _cpfs02_llm_shared_public_lantian_exp_s2_add_critictuning_v01rc1_s2_add_critic_530_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s2_add_critictuning_v01rc1_530_hf_ckpt _cpfs02_llm_shared_public_lantian_exp_s2_add_critictuning_v01rc1_s2_add_ultrafeedback_critic_894_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s2_add_critictuning_v01rc4_894_hf_ckpt _cpfs02_llm_shared_public_lantian_exp_s2_add_critictuning_v01rc1_s2_no_critic_344_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s2_no_critictuning_v01rc1_344_hf_ckpt)
+#models=(_cpfs02_llm_shared_public_lantian_exp_s2_add_critictuning_v01rc1_s2_no_critic_344_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s2_no_critictuning_v01rc1_344_hf_ckpt)
+
+# inference models
+#inference_llms=(internlm2-7b-chat llama-3-70b-instruct mixtral-8x7b-instruct mixtral-8x22b-instruct)
+#inference_llms=(mixtral-8x22b-instruct)
+#inference_llms=(s2_add_critictuning internlm2-7b-chat internlm2-20b-chat)
+#inference_llms=(s2_add_critictuning)
+#inference_llms=(internlm2-7b-chat) #inference_llms=(internlm2-20b-chat)
+inference_llms=(s2_add_critictuning internlm2-7b-chat internlm2-20b-chat llama-3-70b-instruct mixtral-8x7b-instruct)
+#inference_llms=(internlm2-7b-chat)
+#splits=(test dev)
+splits=(dev)
+
+##### rlhf models #####
+rlhf_rm_v7_wm_40_bsz_64_120_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_64_prompt_len_32768_policy_120_hf
+rlhf_rm_v7_wm_80_bsz_64_120_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_80_bsz_64_prompt_len_32768_policy_120_hf
+rlhf_rm_v7_wm_80_bsz_64_240_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_80_bsz_64_prompt_len_32768_policy_240_hf
+rlhf_rm_v8_wm_40_bsz_64_160_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_64_prompt_len_32768_policy_rm_v8_160_hf
+rlhf_rm_v8_wm_80_bsz_64_160_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_80_bsz_64_prompt_len_32768_policy_rm_v8_160_hf
+models=($rlhf_rm_v7_wm_40_bsz_64_120_step $rlhf_rm_v7_wm_80_bsz_64_120_step $rlhf_rm_v7_wm_80_bsz_64_240_step $rlhf_rm_v8_wm_40_bsz_64_160_step $rlhf_rm_v8_wm_80_bsz_64_160_step)
+
+rlhf_rm_v7_wm_40_bsz_16_64_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_16_1_1_prompt_len_32768_policy_rm_v7_64_hf_
+rlhf_rm_v7_wm_40_bsz_16_96_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_16_1_1_prompt_len_32768_policy_rm_v7_96_hf_
+rlhf_rm_v7_wm_40_bsz_16_128_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_16_1_1_prompt_len_32768_policy_rm_v7_128_hf_
+rlhf_rm_v7_wm_40_bsz_16_160_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_16_1_1_prompt_len_32768_policy_rm_v7_160_hf_
+rlhf_rm_v7_wm_40_bsz_16_192_step=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_16_1_1_prompt_len_32768_policy_rm_v7_192_hf_
+
+models=($rlhf_rm_v7_wm_40_bsz_16_64_step $rlhf_rm_v7_wm_40_bsz_16_96_step $rlhf_rm_v7_wm_40_bsz_16_128_step $rlhf_rm_v7_wm_40_bsz_16_160_step $rlhf_rm_v7_wm_40_bsz_16_192_step)
+
+
+
+######## correction in 20240831
+rlhf_v7_relabel_320=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_320
+rlhf_v7_relabel_add_mathcode_192=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_add_mathcode_192
+rlhf_v7_relabel_rm_reverse_96=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_96
+d4_st_5_l1_resumm=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_385_epoch_2_0701_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_385_hf_ckpt
+models=($rlhf_v7_relabel_320 $rlhf_v7_relabel_add_mathcode_192 $rlhf_v7_relabel_rm_reverse_96 $d4_st_5_l1_resumm)
+
+####### correction in 20240903
+rlhf_v7_relabel_rm_reverse_add_mathcode_64=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_64
+rlhf_v7_relabel_rm_reverse_0_1_160=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_0_1_160
+rlhf_v7_relabel_rm_reverse_0_2_128=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_0_2_128
+rlhf_v7_relabel_rm_reverse_0_4_192=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_0_4_192
+rlhf_v7_relabel_rm_reverse_0_8_128=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_0_8_128
+rlhf_v7_relabel_rm_reverse_add_mathcode_0_1_448=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_1_448
+rlhf_v7_relabel_rm_reverse_add_mathcode_0_2_256=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_2_256
+rlhf_v7_relabel_rm_reverse_add_mathcode_0_4_192=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_4_192
+rlhf_v7_relabel_rm_reverse_add_mathcode_0_8_64=_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_8_64
+models=($rlhf_v7_relabel_rm_reverse_add_mathcode_64 $rlhf_v7_relabel_rm_reverse_0_1_160 $rlhf_v7_relabel_rm_reverse_0_2_128 $rlhf_v7_relabel_rm_reverse_0_4_192 $rlhf_v7_relabel_rm_reverse_0_8_128 $rlhf_v7_relabel_rm_reverse_add_mathcode_0_1_448 $rlhf_v7_relabel_rm_reverse_add_mathcode_0_2_256 $rlhf_v7_relabel_rm_reverse_add_mathcode_0_4_192 $rlhf_v7_relabel_rm_reverse_add_mathcode_0_8_64)
+
+
+##### ablation study
+no_all=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_no_all_215_epoch_2_0703_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_no_all_215_hf_ckpt
+no_criteria=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_no_criteria_275_epoch_2_0703_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_no_criteria_275_hf_ckpt
+no_ref=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_no_ref_333_epoch_2_0703_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_no_ref_333_hf_ckpt
+no_task=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_no_task_376_epoch_2_0703_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_no_task_376_hf_ckpt
+baseline=_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_385_epoch_2_0701_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_385_hf_ckpt
+models=($baseline $no_all $no_ref)
+#models=($no_criteria $no_task)
+
+
+###### ablation study
+gpt4=_cpfs02_llm_shared_public_lantian_exp_metacritique_step_train_exp_gpt4_feedback_step_400_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_gpt_feedback_400_hf_ckpt
+our=_cpfs02_llm_shared_public_lantian_exp_metacritique_step_train_exp_our_no_summarization_step_400_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_our_feedback_400_hf_ckpt
+qwen=_cpfs02_llm_shared_public_lantian_exp_metacritique_step_train_exp_qwen_feedback_step_400_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_qwen_feedback_400_hf_ckpt
+internlm2=_cpfs02_llm_shared_public_lantian_exp_metacritique_step_train_exp_internlm2_feedback_step_400_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_internlm_feedback_400_hf_ckpt
+claude=_cpfs02_llm_shared_public_lantian_exp_metacritique_step_train_exp_claude_feedback_step_400_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_claude_feedback_400_hf_ckpt
+models=($gpt4 $our $qwen $internlm2 $claude)
+
+
+internlm2_5_7b_baseline=_cpfs02_llm_shared_public_lantian_exp_internlm2_5_s1_d4_st_5_l1_resumm_20240906_internlm2_5_7b_s1_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_s1_d4_st_5_l1_resumm_20240906_internlm2_5_7b_s1_385_hf_ckpt
+models=($internlm2_5_7b_baseline "qwen2-7b-instruct" "llama-3.1-70b-instruct" "llama-3.1-8b-instruct")
+models=(gpt-4-1106-preview)
+models=(qwen2-72b-instruct)
+models=(_cpfs02_llm_shared_public_lantian_exp_20240418_aliyun_Ampere_7B_v1_1_FT_v1_0_0_s1_rc48_1660_hf_ckpt)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_64_prompt_len_32768_policy_120_hf)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_0_4_192 _cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_1_448)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_64_prompt_len_32768_policy_120_hf)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_add_mathcode_192)
+
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240820_warmup_40_bsz_64_prompt_len_32768_policy_120_hf)
+models=(_cpfs02_llm_shared_public_lantian_exp_202409_13_d4_st_5_l1_resumm_mix_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_300_hf_ckpt)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_320)
+models=(_cpfs02_llm_shared_public_lantian_exp_20240618_sft_7b_critique_nips2024_d4_st_5_l1_resumm_385_epoch_2_0701_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_385_hf_ckpt)
+models=(_cpfs02_llm_shared_public_lantian_exp_202409_13_d4_st_5_l1_resumm_mix_mathcode_with_criteria_s1_model_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_FINAL_critic_v4_st_5_l1_resumm_300_hf)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_20240826_warmup_40_bsz_64_1_1_prompt_len_32768_rm_v7_relabel_rm_reverse_add_mathcode_0_1_448)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_2_mathcode_no_reference_128 tigerscore tigerscore_7b)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_4_mathcode_no_reference_256 _cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_6_mathcode_no_reference_160)
+models=(gpt-3.5-turbo)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_8_mathcode_no_reference_96 _cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_1_0_mathcode_no_reference_144)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_6_mathcode_no_reference_160)
+models=(_cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_sft_hf_rm_v7_relabel_rm_reverse_0_1_relabel_add_mathcode_0_2_mathcode_with_reference_128)
+
+models=(llama-3-8b-instruct llama-3-70b-instruct _cpfs02_llm_shared_public_lantian_exp_transfer_from_tos_llama_3_critique_sft_baseline)
+models=(ultracm autoj-13b)
+models=(_cpfs02_llm_shared_public_lantian_exp_promethues_aliyun_Ampere_7B_v1.1_enchance_FT_v1.0.0_s1_rc47_promethues_540_hf)
+
+#inference_llms=(s2_add_critictuning internlm2-7b-chat internlm2-20b-chat mixtral-8x7b-instruct llama-3-70b-instruct)
+inference_llms=(s2_add_critictuning)
+#inference_llms=(internlm2-7b-chat)
+#inference_llms=(internlm2-20b-chat)
+#inference_llms=(llama-3-70b-instruct)
+#inference_llms=(mixtral-8x7b-instruct)
+
+for split in ${splits[@]}
+do
+    for model in ${models[@]}
+    do
+        for inference_llm in ${inference_llms[@]}
+        do
+            #inference_llm=llama-3-70b-instruct
+            #inference_llm=s2_add_critictuning
+
+            if [[ "$inference_llm" == "internlm2-7b-chat" ]] || [[ "$inference_llm" == "internlm2-20b-chat" ]] || [[ "$inference_llm" == "s2_add_critictuning" ]]
+            then
+                cuda_devices=0
+            else
+                cuda_devices=0,1,2,3,4,5,6,7
+            fi
+            
+            echo "=============================================="
+            echo "Inference [$model] feedback by [$inference_llm] on split [$split] on CUDA [$cuda_devices]"
+            echo "=============================================="
+
+            #--data_dir parse_resumm_rlhf_20240831_temp_07_dev \
+            CUDA_VISIBLE_DEVICES=$cuda_devices python correction_models.py \
+                --model_name $model \
+                --data_dir parse_resumm_rlhf_20240824_dev \
+                --output_dir relabel_20240901_rlhf_${split}_output_correction_by_${inference_llm}_reverse_feedback_new \
+                --split $split \
+                --inference_model_name $inference_llm
+            #--data_dir parse_resumm_20240704_resumm_metacritique_train_setp_exp_reverse_feedback \
+
+            #inference_llm=mixtral-8x7b-instruct
+            #echo "=============================================="
+            #echo "Inference $model feedback by $inference_llm" on split $split
+            #echo "=============================================="
+            #CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python correction_models.py --data_dir parse_resumm_s2_$split --model_name $model --output_dir ${split}_output_correction_s2_by_${inference_llm} --split $split --inference_model_name $inference_llm
+        done
+    done
+done

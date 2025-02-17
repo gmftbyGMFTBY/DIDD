@@ -1,0 +1,12 @@
+[2025-02-16 14:26:19,651] [WARNING] [load.py:1444:get_module]   Using the latest cached version of the dataset since llm-agents/CriticBench couldn't be found on the Hugging Face Hub
+[2025-02-16 14:26:19,652] [WARNING] [cache.py:94:_find_hash_in_cache]   Found the latest cached dataset configuration 'default' at data/llm-agents___critic_bench/default/0.0.0/b96a766ac74020e2403a86fa0e92260c0e28bfdb (last modified on Sat Feb 15 20:28:35 2025).
+evaluate result in /home/lt/ReNewPoNe/eval/CriticBench/src/response_quality/high/_home_lt_ReNewPoNe_response_quality_save_v2_high_iter_7582_merge_hf/critique/result_02_16_14_15_11.jsonl
+[!] Error Num: 0
+critique score: 45.906259514641356
+critique score by type: {
+  "Mathematical Reasoning": 44.64669695988567,
+  "Commonsense Reasoning": 32.4664406448043,
+  "Symbolic Reasoning": 22.891978233472386,
+  "Algorithmic task": 15.281501340482572,
+  "Code Generation": 36.6354634070865
+}
