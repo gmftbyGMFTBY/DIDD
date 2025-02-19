@@ -28,7 +28,7 @@ pretrained_model_name_or_path = '/home/lt/NewPoNe/model/internlm2-7b-chat'
 use_varlen_attn = False
 
 # Data
-data_path = 'data/baseline_iter_0.json'
+data_path = 'data/overall_v5.json'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 max_length = 2048
 pack_to_max_length = False

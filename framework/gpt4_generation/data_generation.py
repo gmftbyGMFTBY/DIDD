@@ -1,4 +1,5 @@
 import json
+import numpy as np
 from copy import deepcopy
 from tqdm import tqdm
 from itertools import chain
@@ -7,6 +8,7 @@ import ipdb
 import sys
 import argparse
 from utils import *
+from collections import Counter
 import re
 
 from lmdeploy import pipeline, GenerationConfig, PytorchEngineConfig, ChatTemplateConfig
@@ -27,10 +29,12 @@ parser.add_argument("--failure-dis-file", default='')
 parser.add_argument("--root-path", default='output')
 parser.add_argument("--bsz", default=16, type=int)
 parser.add_argument("--gen-num", default=16, type=int)
+parser.add_argument("--test-query-num", default=100, type=int)
 parser.add_argument("--random_seed", default=0, type=float)
 parser.add_argument("--few-shot-num", default=3, type=int)
 parser.add_argument("--iter-num", default=0, type=int)
 parser.add_argument("--train-num-each", default=0, type=int)
+parser.add_argument("--train-query-num", default=0, type=int)
 args = parser.parse_args()
 
 
@@ -45,7 +49,7 @@ class OpenLLM:
     def __init__(self, model_name, prompt_file, inner_bsz):
         self.model_name = model_name
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
-        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=4096)
+        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
         self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
         self.prompt = open(prompt_file).read()
         self.inner_bsz = inner_bsz
@@ -96,10 +100,10 @@ def parse_test_set(sample):
 
     gen_results = []
     for example in examples:
-        query = re.findall(r'## Query:(.+)##', example, re.DOTALL | re.MULTILINE)
-        response = re.findall(r'## Response:(.+)##', example, re.DOTALL | re.MULTILINE)
-        #critique = re.findall(r'## Critique:(.+)', example, re.DOTALL | re.MULTILINE)
-        critique = re.findall(r'## Critique(.+)', example, re.DOTALL | re.MULTILINE)
+        query = re.findall(r'## Query:(.+)## Response', example, re.DOTALL | re.MULTILINE)
+        response = re.findall(r'## Response:(.+)## Critique', example, re.DOTALL | re.MULTILINE)
+        critique = re.findall(r'## Critique:(.+)', example, re.DOTALL | re.MULTILINE)
+        #critique = re.findall(r'## Critique(.+)', example, re.DOTALL | re.MULTILINE)
         try:
             assert len(query) == 1 and len(response) == 1 and len(critique) == 1
         except:
@@ -111,8 +115,6 @@ def parse_test_set(sample):
             'critique': critique
         })
     return gen_results
-
-
 
 
 def remove_labels(string):
@@ -130,49 +132,137 @@ def packup_examples(examples):
     return '\n'.join(strings)
 
 
-def generate_train_data(few_shot, failure_dis):
+def generate_train_data(few_shot, domain_dis, quality_dis):
     '''step 2: 针对top-50的错误分布，生成训练数据
     使用测试数据中的样本作为 few-shot
     '''
-    base_ratio = args.train_num_each // 10
+
+    def choose(name, dis):
+        return np.random.choice(a=name, p=dis).item()
+
     random.seed(args.random_seed)
     dataset = []
-    for category, value in few_shot.items():
-        for quality, samples in value.items():
-            if (category, quality) in failure_dis:
-                examples = random.sample(samples, min(args.few_shot_num, len(samples)))
-                reference = packup_examples(examples)
-                for index in range(base_ratio):
-                    prompt_string = prompt.format(
-                        responsequality=quality,
-                        domain=category,
-                        generationnum=10,
-                        reference=reference,
-                        domaindef=few_shot_detail[category]
-                    )
-                    dataset.append((prompt_string, category, quality, index))
-    print(f'[!] 合成了{len(dataset)}的测试数据')
+    selected_domains, selected_qualities = [], []
+    base_ratio = args.train_num_each // 10
+    domains = [a for a, b in domain_dis.items()]
+    domain_dis = [b for a, b in domain_dis.items()]
+    qualities = [a for a, b in quality_dis.items()]
+    quality_dis = [b for a, b in quality_dis.items()]
+    for _ in range(args.train_query_num):
+        domain_ = choose(domains, domain_dis)
+        quality_ = choose(qualities, quality_dis)
+        selected_qualities.append(quality_)
+        selected_domains.append(domain_)
+        samples = few_shot[domain_][quality_]
+        examples = random.sample(samples, min(args.few_shot_num, len(samples)))
+        reference = packup_examples(examples)
+        for index in range(base_ratio):
+            prompt_string = prompt.format(
+                responsequality=quality_,
+                domain=domain_,
+                generationnum=10,
+                reference=reference,
+                domaindef=few_shot_detail[domain_]
+            )
+            dataset.append((prompt_string, domain_, quality_, index))
+    selected_domains = Counter(selected_domains).most_common()
+    selected_qualities = Counter(selected_qualities).most_common()
+    print(f'[!] domain distribution:', selected_domains)
+    print(f'[!] quality distribution:', selected_qualities)
     return dataset
 
 
 def generate_test_data(few_shot):
-    '''step 1: 生成测试数据，检验模型的效果'''
+    '''step 1: 生成测试数据，检验模型的效果
+    * 增大nlp_tasks, general_communication, creative_writing, summarization数据的比例
+    * 增大 medium 数据的比例（4 <= x <= 6/7）
+        * low: 0.1
+        * medium: 0.6
+        * high: 0.3
+    '''
+
+    def choose_domain(random_num):
+        if 0 <= random_num < 0.175:
+            return 'general_communication'
+        elif 0.175 <= random_num < 0.175 * 2:
+            return 'creative_writing'
+        elif 0.175 * 2 <= random_num < 0.175 * 3:
+            return 'nlp_tasks'
+        elif 0.175 * 3 <= random_num < 0.175 * 4:
+            return 'summarization'
+        elif 0.175 * 3 <= random_num < 0.175 * 4:
+            return 'summarization'
+        elif 0.175 * 4 <= random_num < 0.175 * 4 + 0.1:
+            return 'code'
+        elif 0.175 * 4 + 0.1 <= random_num < 0.175 * 4 + 0.2:
+            return 'exam_question'
+        elif 0.175 * 4 + 0.2 <= random_num < 0.175 * 4 + 0.25:
+            return 'functional_writing'
+        else:
+            return 'rewriting'
+
+    def choose_quality(random_num):
+        if 0 <= random_num < 0.1:
+            return 'low'
+        elif 0.1 <= random_num < 0.7:
+            return 'medium'
+        else:
+            return 'high'
+
     random.seed(args.random_seed)
     dataset = []
-    for category, value in few_shot.items():
-        for quality, samples in value.items():
-            examples = random.sample(samples, min(args.few_shot_num, len(samples)))
-            reference = packup_examples(examples)
-            prompt_string = prompt.format(
-                responsequality=quality,
-                domain=category,
-                generationnum=args.gen_num,
-                reference=reference,
-                domaindef=few_shot_detail[category]
-            )
-            dataset.append((prompt_string, category, quality))
-    print(f'[!] 合成了{len(dataset)}的测试数据')
+    domain_dis = {
+        # iter-1: 0.7
+        'general_communication': 0.175,
+        'creative_writing': 0.175,
+        'nlp_tasks': 0.175,
+        'summarization': 0.175,
+        # tier-2: 0.2
+        'code': 0.1,
+        'exam_question': 0.1,
+        # iter-3: 0.1
+        'functional_writing': 0.05,
+        'rewriting': 0.05,
+    }
+    quality_dis = {'high': 0.3, 'medium': 0.6, 'low': 0.1}
+    assert sum(domain_dis.values()) == 1
+    selected_domains, selected_qualities = [], []
+    for _ in range(args.test_query_num):
+        random_a, random_b = random.random(), random.random()
+        domain_ = choose_domain(random_a)
+        quality_ = choose_quality(random_b)
+        selected_qualities.append(quality_)
+        selected_domains.append(domain_)
+        samples = few_shot[domain_][quality_]
+        examples = random.sample(samples, min(args.few_shot_num, len(samples)))
+        reference = packup_examples(examples)
+        prompt_string = prompt.format(
+            responsequality=quality_,
+            domain=domain_,
+            generationnum=args.gen_num,
+            reference=reference,
+            domaindef=few_shot_detail[domain_]
+        )
+        dataset.append((prompt_string, domain_, quality_))
+    print(f'[!] 合成了{len(dataset)}的测试数据;每个测试数据生成{args.gen_num}样本')
+    selected_domains = Counter(selected_domains).most_common()
+    selected_qualities = Counter(selected_qualities).most_common()
+    print(f'[!] domain distribution:', selected_domains)
+    print(f'[!] quality distribution:', selected_qualities)
     return dataset
+
+    #for category, value in few_shot.items():
+    #    for quality, samples in value.items():
+    #        prompt_string = prompt.format(
+    #            responsequality=quality,
+    #            domain=category,
+    #            generationnum=args.gen_num,
+    #            reference=reference,
+    #            domaindef=few_shot_detail[category]
+    #        )
+    #        dataset.append((prompt_string, category, quality))
+    #print(f'[!] 合成了{len(dataset)}的测试数据')
+    #return dataset
 
 
 def batch_chat_with_api_train(dataset, output_path):
@@ -260,15 +350,15 @@ def batch_chat_with_api_meta_evaluation(dataset, output_path, prompt_temp):
 
 
 if __name__ == "__main__":
-    prompt = open('prompts/data_generation.md').read()
-    few_shot = json.load(open('few_shot.json'))
-    few_shot_detail = json.load(open('few_shot_detail.json'))
+    prompt = open('prompts/data_generation_v2.md').read()
+    few_shot = json.load(open('new_few_shot.json'))
+    few_shot_detail = json.load(open('few_shot_detail_v2.json'))
 
     ####### one loop #######
     if args.mode == 'test_set_construction':
         ########## 1. generate test set  [test_set_construction]
         test_set = generate_test_data(few_shot)
-        subfolder_name = f'test_set_gn_{args.gen_num}_fsn_{args.few_shot_num}'
+        subfolder_name = f'test_set_gn_{args.test_query_num}_{args.gen_num}_fsn_{args.few_shot_num}'
         if os.path.exists(args.root_path) is False:
             os.makedirs(args.root_path)
         if os.path.exists(os.path.join(args.root_path, f'iter_{args.iter_num}')) is False:
@@ -283,7 +373,7 @@ if __name__ == "__main__":
             exit()
         ########## 2. evaluate model performance on these test set
         model = OpenLLM(args.model_path, args.model_prompt, args.model_bsz)
-        subfolder_name = f'test_set_gn_{args.gen_num}_fsn_{args.few_shot_num}'
+        subfolder_name = f'test_set_gn_{args.test_query_num}_{args.gen_num}_fsn_{args.few_shot_num}'
         folder =  f'{args.root_path}/iter_{args.iter_num}/{subfolder_name}'
         test_set = []
         for file in os.listdir(folder):
@@ -304,21 +394,13 @@ if __name__ == "__main__":
         prompt_template = open('prompts/meta_evaluation.md').read()
         save_path =  f'{args.root_path}/iter_{args.iter_num}/{args.model_prediction_name}.json'
         model_prediction = json.load(open(save_path))
-
         if os.path.exists(os.path.join(args.root_path, f'iter_{args.iter_num}', 'meta_evaluation')) is False:
             os.makedirs(os.path.join(args.root_path, f'iter_{args.iter_num}', 'meta_evaluation'))
         batch_chat_with_api_meta_evaluation(model_prediction, f'{args.root_path}/iter_{args.iter_num}/meta_evaluation', prompt_template)
     elif args.mode == 'train_set_construction':
+        # quality error dis, domain error dis
         failure_dis = json.load(open(args.failure_dis_file))
-        failure_set = []
-        for sample in failure_dis:
-            nn = sample[0].split('-')
-            #assert len(nn) == 2
-            category, quality = '-'.join(nn[:-1]), nn[-1]
-            failure_set.append((category, quality))
-        failure_set = set(failure_set)
-        #save_path =  f'{args.root_path}/iter_{args.iter_num}/model_prediction.json'
-        #model_prediction = json.load(open(save_path))
-        train_set = generate_train_data(few_shot, failure_set)
+        domain_dis, quality_dis = failure_dis['domain_dis'], failure_dis['quality_dis']
+        train_set = generate_train_data(few_shot, domain_dis, quality_dis)
         subfolder_name = f'train_set_gn_{args.train_num_each}_fsn_{args.few_shot_num}'
         batch_chat_with_api_train(train_set, f'{args.root_path}/iter_{args.iter_num}/{subfolder_name}')

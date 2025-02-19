@@ -28,14 +28,42 @@ creative_writing=/home/lt/ReNewPoNe/domain/save_analysis/creating_writing/iter_4
 functional_writing=/home/lt/ReNewPoNe/domain/save_analysis/functional_writing/iter_6000_merge_hf
 rewriting=/home/lt/ReNewPoNe/domain/save_analysis/rewriting/iter_2160_merge_hf
 
-models=($code $exam_question $general_communication $summarization $creative_writing $functional_writing $rewriting)
-labels=(code exam_question general_communication summarization creative_writing functional_writing rewriting)
+##### response quality high-vs-low analysis
+high_vs_low_10=/home/lt/ReNewPoNe/response_quality/save_high_vs_low/high_vs_low_10/iter_5876_merge_hf
+high_vs_low_09=/home/lt/ReNewPoNe/response_quality/save_high_vs_low/high_vs_low_09/iter_5884_merge_hf
+high_vs_low_08=/home/lt/ReNewPoNe/response_quality/save_high_vs_low/high_vs_low_08/iter_5876_merge_hf
 
-for index in $(seq 0 6)
+models=($high_vs_low_10 $high_vs_low_09 $high_vs_low_08)
+labels=(high_vs_low_10 high_vs_low_09 high_vs_low_08)
+
+##### response quality overall-v4-v5
+rq_overall_v5=/home/lt/ReNewPoNe/response_quality/save_v4/overall_v5/iter_10340_merge_hf
+rq_overall_v6=/home/lt/ReNewPoNe/response_quality/save_v4/overall_v6/iter_10336_merge_hf
+
+models=($rq_overall_v5 $rq_overall_v6)
+labels=(overall_v5 overall_v6)
+
+##### domain strategy
+dis=/home/lt/ReNewPoNe/domain/save_domain_strategy/domain_strategy_dis/iter_2160_merge_hf
+uniform=/home/lt/ReNewPoNe/domain/save_domain_strategy/domain_strategy_uniform/iter_2160_merge_hf
+models=($dis $uniform)
+labels=(dis uniform)
+
+##### framework autoj_ours_iter_0
+autoj_ours_iter_0_e1=/home/lt/ReNewPoNe/framework/save/autoj_ours_iter_0_e1/iter_1955_merge_hf
+autoj_with_baseline_data_iter_0=/home/lt/ReNewPoNe/framework/save/autoj_with_baseline_data_iter_0/iter_2939_merge_hf
+ultracm_iter_0=/home/lt/ReNewPoNe/framework/save/ultracm_iter_0_20250218/iter_6960_merge_hf
+baseline_20250218=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
+baseline_iter_1_20250218=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_20250218/iter_12414_merge_hf
+models=($baseline_iter_1_20250218)
+labels=(baseline_iter_1_20250218)
+
+for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+1))
+    index=$(($index+3))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_domain_analysis/$label --split test &
+    CUDA_VISIBLE_DEVICES=4 python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
+    CUDA_VISIBLE_DEVICES=7 python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
 done

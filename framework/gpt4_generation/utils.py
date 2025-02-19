@@ -34,6 +34,7 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
                 completion = client.chat.completions.create(
                     model=model,
                     messages=messages,
+                    #timeout=30
                 )
                 success = True
                 print(f'[!] one try success')
@@ -42,7 +43,7 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
                 print(f'[!] one try failed:', error)
                 time.sleep(1)
                 sys.stdout.flush()
-                success = True
+                success = False
                 rest = None
 
         return {
@@ -59,7 +60,7 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
     return response, index
 
 
-def batch_chat(payloads, sleep_time=20, retry_num=5, temp=0.8, max_tokens=4096, model_name='gpt-4o', debug=False):
+def batch_chat(payloads, sleep_time=20, retry_num=5, temp=0.8, max_tokens=2048, model_name='gpt-4o', debug=False):
     pool = Pool(processes=32)
     result_list = []
     for index, payload in enumerate(payloads):

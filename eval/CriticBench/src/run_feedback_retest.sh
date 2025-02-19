@@ -34,7 +34,35 @@ overall_v4=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/ove
 files=($medium_v4 $overall_v3 $overall_v4)
 labels=(medium_v4 overall_v3 overall_v4)
 
-for index in $(seq 0 2)
+##### domain strategy dis
+dis=/home/lt/ReNewPoNe/eval/CriticBench/src/domain_strategy_analysis/dis/_home_lt_ReNewPoNe_domain_save_domain_strategy_domain_strategy_dis_iter_2160_merge_hf/critique/result_02_18_10_08_29.jsonl
+uniform=/home/lt/ReNewPoNe/eval/CriticBench/src/domain_strategy_analysis/uniform/_home_lt_ReNewPoNe_domain_save_domain_strategy_domain_strategy_uniform_iter_2160_merge_hf/critique/result_02_18_10_09_15.jsonl
+
+files=($dis $uniform)
+labels=(dis uniform)
+
+##### response quality v56
+rq_overall_v5=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/overall_v5/_home_lt_ReNewPoNe_response_quality_save_v4_overall_v5_iter_10340_merge_hf/critique/result_02_18_10_09_39.jsonl
+rq_overall_v6=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/overall_v6/_home_lt_ReNewPoNe_response_quality_save_v4_overall_v6_iter_10336_merge_hf/critique/result_02_18_10_09_21.jsonl
+files=($rq_overall_v5 $rq_overall_v6)
+labels=(rq_overall_v5 rq_overall_v6)
+
+##### high-vs-low
+high_vs_low_10=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/high_vs_low_10/_home_lt_ReNewPoNe_response_quality_save_high_vs_low_high_vs_low_10_iter_5876_merge_hf/critique/result_02_18_10_13_14.jsonl
+high_vs_low_09=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/high_vs_low_09/_home_lt_ReNewPoNe_response_quality_save_high_vs_low_high_vs_low_09_iter_5884_merge_hf/critique/result_02_18_10_06_30.jsonl
+high_vs_low_08=/home/lt/ReNewPoNe/eval/CriticBench/src/response_quality_analysis/high_vs_low_08/_home_lt_ReNewPoNe_response_quality_save_high_vs_low_high_vs_low_08_iter_5876_merge_hf/critique/result_02_18_10_09_37.jsonl
+
+files=($high_vs_low_10 $high_vs_low_09 $high_vs_low_08)
+labels=(high_vs_low_10 high_vs_low_09 high_vs_low_08)
+
+baseline_20250218=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_20250218/_home_lt_ReNewPoNe_framework_save_baseline_20250218_iter_9608_merge_hf/critique/result_02_19_08_59_21.jsonl
+baseline_iter_1_20250218=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_iter_1_20250218/_home_lt_ReNewPoNe_framework_save_baseline_iter_1_20250218_iter_12414_merge_hf/critique/result_02_19_15_45_47.jsonl
+ultracm_iter_0=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ultracm_iter_0/_home_lt_ReNewPoNe_framework_save_ultracm_iter_0_20250218_iter_6960_merge_hf/critique/result_02_19_15_24_10.jsonl
+autoj_with_baseline_data_iter_0=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/autoj_with_baseline_data_iter_0/_home_lt_ReNewPoNe_framework_save_autoj_with_baseline_data_iter_0_iter_2939_merge_hf/critique/result_02_19_16_39_45.jsonl
+files=($autoj_with_baseline_data_iter_0)
+labels=(autoj_with_baseline_data_iter_0)
+
+for index in $(seq 0 0)
 do
     file=${files[$index]}
     label=${labels[$index]}
@@ -44,5 +72,5 @@ do
         --tasks Q \
         --prompt_type zs-crit-cot \
         --enable_code_execution \
-        --existed_crit_file $file > log/response_quality_analysis_$label.txt
+        --existed_crit_file $file > log/framework_$label.txt
 done

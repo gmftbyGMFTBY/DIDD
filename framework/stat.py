@@ -5,7 +5,7 @@ import ipdb
 import re
 
 if __name__ == "__main__":
-    file = 'data/baseline_iter_0.json'
+    file = 'data/autoj_ours_iter_0.json'
     with open(file) as f:
         data = json.load(f)
 
@@ -19,4 +19,4 @@ if __name__ == "__main__":
     print('max:', max(scores))
     print('min:', min(scores))
     print('avg:', np.mean(scores))
-    print(sorted(Counter(scores).most_common(), key=lambda x:x[0]))
+    print(sorted(Counter(scores).most_common(), key=lambda x:x[1]))

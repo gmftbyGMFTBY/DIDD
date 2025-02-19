@@ -8,9 +8,19 @@ import os
 from collections import Counter
 import ipdb
 
-'''overall 中 medium 比例高一些（主观分数显示 medium 多了主观会高）
-且 medium 改为4<= <=6: medium_v4.json
-overall_v3.json
+'''
+固定 medium 比例为0.5，测试 high:low的比例和效果的对比：
+high:low=10:0
+high:low=9:1
+high:low=8:2
+high:low=7:3
+high:low=6:4
+high:low=5:5
+high:low=4:6
+high:low=3:7
+high:low=2:8
+high:low=1:9
+high:low=0:10
 '''
 
 
@@ -80,30 +90,21 @@ if __name__ == "__main__":
             d_high.extend(samples)
 
     print(f"low - {len(d_low)}; medium - {len(d_medium)}; high - {len(d_high)}")
-    max_length = max(len(d_low), len(d_medium), len(d_high))
-    rate = [0.3, 0.4, 0.3]
-    num_medium, num_low, num_high = int(max_length * rate[1]), int(max_length * rate[0]), int(max_length * rate[-1])
+    #max_length = max(len(d_low), len(d_medium), len(d_high))
+    medium_set = random.sample(d_medium, 1500)
+    max_base_num = 1500 # high + low
 
-    overall = []
-    for d, num in zip([d_low, d_medium, d_high], [num_low, num_medium, num_high]):
-        data = []
-        for sample in random.sample(d, num):
+    for high_rate in [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0]:
+        low_rate = 1 - high_rate
+        high_rate, low_rate = round(high_rate, 1), round(low_rate, 1)
+        num_low, num_high = int(low_rate * max_base_num), int(high_rate * max_base_num)
+        low_set = random.sample(d_low, num_low)
+        high_set = random.sample(d_high, num_high)
+        overall = []
+        for sample in medium_set + low_set + high_set:
             conv = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in sample['input']]) + ' [end of conversation]'
             string = prompt.format(conversation=conv, response=remove_labels(sample['response']))
-            data.append({'conversation': [{'input': string, 'output': sample['critique'][-1]}]})
-        overall.extend(data)
-    print(f'[!] overall:', len(overall))
-
-    new_datasets = []
-    for d, file_name in zip([d_medium], ['data/medium_v4.json']):
-        data = []
-        for sample in d:
-            conv = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in sample['input']]) + ' [end of conversation]'
-            string = prompt.format(conversation=conv, response=remove_labels(sample['response']))
-            data.append({'conversation': [{'input': string, 'output': sample['critique'][-1]}]})
-        with open(file_name, 'w') as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
-        print(f'[!] {file_name}:', len(data))
-
-    with open('data/overall_v6.json', 'w') as f:
-        json.dump(overall, f, ensure_ascii=False, indent=4)
+            overall.append({'conversation': [{'input': string, 'output': sample['critique'][-1]}]})
+        with open(f'data/high_vs_low_exp_{high_rate}_{low_rate}.json', 'w') as f:
+            json.dump(overall, f, ensure_ascii=False, indent=4)
+        print(f'[!] high-vs-low: {high_rate}-{low_rate}; high-num-{num_high}-low-num-{num_low}-overall-{len(overall)}')

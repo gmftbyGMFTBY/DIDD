@@ -52,13 +52,14 @@ if __name__ == "__main__":
             pbar.update(1)
 
     dataset = []
-    for sample in random.sample(new_data, 3000):
+    #for sample in random.sample(new_data, 3000):
+    for sample in random.sample(new_data, 4979):
         ipt = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in sample['input']]) + ' [end of conversation]'
         string = prompt.format(conversation=ipt, response=remove_labels(sample['response']))
         conv = {'conversation': [{'input': string, 'output': sample['critique'][-1]}]}
         dataset.append(conv)
 
-    with open('data/baseline.json', 'w') as f:
+    with open('data/baseline_num_6382.json', 'w') as f:
         json.dump(dataset, f, ensure_ascii=False, indent=4)
 
     print(f'[!] total category:', len(few_shot))

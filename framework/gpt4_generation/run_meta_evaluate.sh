@@ -13,4 +13,4 @@ python data_generation.py \
     --gen-num $3 \
     --few-shot-num $4 \
     --model-prediction-name model_prediction \
-    --bsz 16
+    --bsz 8
