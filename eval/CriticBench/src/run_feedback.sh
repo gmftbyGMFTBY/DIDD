@@ -56,16 +56,24 @@ baseline_20250218=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_
 autoj_with_baseline_data_iter_0=/home/lt/ReNewPoNe/framework/save/autoj_with_baseline_data_iter_0/iter_2939_merge_hf
 ultracm_iter_0=/home/lt/ReNewPoNe/framework/save/ultracm_iter_0_20250218/iter_6960_merge_hf
 baseline_iter_1_20250218=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_20250218/iter_12414_merge_hf
+baseline_num_4979=/home/lt/ReNewPoNe/framework/save/baseline_num_4979/iter_9368_merge_hf
+baseline_num_6382=/home/lt/ReNewPoNe/framework/save/baseline_num_6382/iter_11990_merge_hf
 ultracm_iter_0=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ultracm_iter_0/_home_lt_ReNewPoNe_framework_save_ultracm_iter_0_20250218_iter_6960_merge_hf/critique/result_02_19_15_24_10.jsonl
-models=($ultracm_iter_0)
-labels=(ultracm_iter_0)
+
+baseline_dis_mode_new=/home/lt/ReNewPoNe/framework/save/baseline_dis_mode_new/iter_8206_merge_hf
+baseline_dis_mode_raw=/home/lt/ReNewPoNe/framework/save/baselien_dis_mode_raw/iter_8206_merge_hf
+llama3_8b_baseline=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline/iter_5676_merge_hf
+qwen15_7b_baseline=/home/lt/ReNewPoNe/framework/save/qwen1_5_7b_baseline/iter_5678_merge_hf
+
+models=($baseline_num_6382)
+labels=(baseline_num_6382)
 
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+2))
+    index=$(($index+0))
     echo "Infer $model with $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus 2 --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label
+    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
 done
 

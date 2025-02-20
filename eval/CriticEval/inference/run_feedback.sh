@@ -55,15 +55,24 @@ autoj_with_baseline_data_iter_0=/home/lt/ReNewPoNe/framework/save/autoj_with_bas
 ultracm_iter_0=/home/lt/ReNewPoNe/framework/save/ultracm_iter_0_20250218/iter_6960_merge_hf
 baseline_20250218=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
 baseline_iter_1_20250218=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_20250218/iter_12414_merge_hf
-models=($baseline_iter_1_20250218)
-labels=(baseline_iter_1_20250218)
+baseline_num_4979=/home/lt/ReNewPoNe/framework/save/baseline_num_4979/iter_9368_merge_hf
+baseline_num_6382=/home/lt/ReNewPoNe/framework/save/baseline_num_6382/iter_11990_merge_hf
+
+baseline_dis_mode_raw=/home/lt/ReNewPoNe/framework/save/baselien_dis_mode_raw/iter_8206_merge_hf
+baseline_dis_mode_new=/home/lt/ReNewPoNe/framework/save/baseline_dis_mode_new/iter_8206_merge_hf
+
+llama3_8b_baseline=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline/iter_5676_merge_hf
+qwen15_7b_baseline=/home/lt/ReNewPoNe/framework/save/qwen1_5_7b_baseline/iter_5678_merge_hf
+
+models=($qwen15_7b_baseline)
+labels=(qwen15_7b_baseline)
 
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+3))
+    index=$(($index+0))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=4 python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
-    CUDA_VISIBLE_DEVICES=7 python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
+    #CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
+    CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev
 done

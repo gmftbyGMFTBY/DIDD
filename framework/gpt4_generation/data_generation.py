@@ -20,6 +20,7 @@ from lmdeploy import pipeline, GenerationConfig, PytorchEngineConfig
 
 parser = argparse.ArgumentParser()
 # test_set_construction, evaluate
+parser.add_argument("--dis-mode", default='mixture') # mixture, new, raw
 parser.add_argument("--mode", default='test_set_construction')
 parser.add_argument("--model-prompt", default='')
 parser.add_argument("--model-prediction-name", default='')
@@ -402,5 +403,5 @@ if __name__ == "__main__":
         failure_dis = json.load(open(args.failure_dis_file))
         domain_dis, quality_dis = failure_dis['domain_dis'], failure_dis['quality_dis']
         train_set = generate_train_data(few_shot, domain_dis, quality_dis)
-        subfolder_name = f'train_set_gn_{args.train_num_each}_fsn_{args.few_shot_num}'
+        subfolder_name = f'train_set_gn_{args.train_num_each}_fsn_{args.few_shot_num}_mode_{args.dis_mode}'
         batch_chat_with_api_train(train_set, f'{args.root_path}/iter_{args.iter_num}/{subfolder_name}')

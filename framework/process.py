@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     dataset = []
     #for sample in random.sample(new_data, 3000):
-    for sample in random.sample(new_data, 4979):
+    for sample in random.sample(new_data, 6382):
         ipt = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in sample['input']]) + ' [end of conversation]'
         string = prompt.format(conversation=ipt, response=remove_labels(sample['response']))
         conv = {'conversation': [{'input': string, 'output': sample['critique'][-1]}]}

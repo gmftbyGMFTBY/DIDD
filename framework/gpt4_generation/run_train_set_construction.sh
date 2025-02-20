@@ -7,6 +7,7 @@ echo "[!] train-num-each: $3"
 echo "[!] few-shot-num: $4"
 echo "[!] failure-dis-file: $5"
 echo "[!] train-query-num: $6"
+echo "[!] dis-mode: $7"
 python data_generation.py \
     --mode train_set_construction \
     --root-path $1 \
@@ -15,4 +16,5 @@ python data_generation.py \
     --few-shot-num $4 \
     --failure-dis-file $5 \
     --train-query-num $6 \
+    --dis-mode $7 \
     --bsz 16

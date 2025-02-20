@@ -1,10 +1,16 @@
 Model,CriticEval_obj,CriticEval_sub
 baseline,45.75,4.17
-baseline_20250218,49.24,5.14
+baseline_20250218_iter_0,49.24,5.14
 baseline_20250218_iter_1,52.15,4.75
+baseline_20250218_iter_0_dis_mode_raw,46.73,
+baseline_20250218_iter_0_dis_mode_new,44.54,
+baseline_num_4979,53.49,4.63
+baseline_num_6382,46.73,
 baseline_iter_0_v2,47.31,4.28
 baseline_autoj,48.08,3.79
 baseline_autoj_iter_0_v2,,
 autoj_with_baseline_data_iter_0,43.09,
 baseline_ultracm,56.78,3.76
 baseline_ultracm_iter_0_v2,58.12,3.82
+qwen1_5_7b_baseline,,
+llama3_8b_baseline,48.76,

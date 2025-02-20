@@ -61,8 +61,10 @@ class OpenLLM:
     def __init__(self, model_name='api_model'):
         self.model_name = model_name
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
-        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=4096)
-        self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
+        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
+        #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
+        #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
+        self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
         self.prompt = open('utils/singlewise_critique.md').read()
         #self.prompt = open('utils/pairwise_critique.md').read()
 
@@ -81,6 +83,7 @@ class OpenLLM:
             index += batch_size
             outputs.extend(responses)
             pbar.update(len(msgs_))
+            ipdb.set_trace()
         return outputs
 
     @torch.no_grad()

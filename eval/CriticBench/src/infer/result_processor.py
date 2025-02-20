@@ -100,7 +100,7 @@ class ResultProcessor:
                         scores = re.findall('Score: (\d+.\d+)', pred_str)
                         score = float(scores[-1])
                         scores_.append(score)
-                        if score >= 2.5:
+                        if score >= 5:
                             clean_pred = True
                         else:
                             clean_pred = False
@@ -109,7 +109,7 @@ class ResultProcessor:
                             scores = re.findall('Score: (\d+)', pred_str)
                             score = float(scores[-1])
                             scores_.append(score)
-                            if score >= 2.5:
+                            if score >= 5:
                                 clean_pred = True
                             else:
                                 clean_pred = False

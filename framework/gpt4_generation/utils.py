@@ -29,6 +29,8 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
     ) -> dict:
         success = False
         completion = None
+        max_retry_num = 10
+        counter = 0
         while not success:
             try:
                 completion = client.chat.completions.create(
@@ -45,6 +47,9 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
                 sys.stdout.flush()
                 success = False
                 rest = None
+                counter += 1
+                if counter > max_retry_num:
+                    break
 
         return {
             "generation": rest,

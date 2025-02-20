@@ -43,7 +43,6 @@ if __name__ == "__main__":
                 string = prompt.format(conversation=ipt, response=sample['response'])
                 conv = {'conversation': [{'input': string, 'output': sample['critique']}]}
                 baseline_data.append(conv)
-    print(f'[!] overall baseline data:', len(baseline_data))
-
+        print(f'[!] overall baseline data:', len(baseline_data))
     with open('data/autoj_with_baseline_data_iter_0.json', 'w') as f:
         json.dump(baseline_data, f, ensure_ascii=False, indent=4)
