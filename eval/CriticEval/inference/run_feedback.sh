@@ -62,17 +62,38 @@ baseline_dis_mode_raw=/home/lt/ReNewPoNe/framework/save/baselien_dis_mode_raw/it
 baseline_dis_mode_new=/home/lt/ReNewPoNe/framework/save/baseline_dis_mode_new/iter_8206_merge_hf
 
 llama3_8b_baseline=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline/iter_5676_merge_hf
+llama3_8b_baseline_iter_0=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline_iter_0/iter_8484_merge_hf
 qwen15_7b_baseline=/home/lt/ReNewPoNe/framework/save/qwen1_5_7b_baseline/iter_5678_merge_hf
 
-models=($qwen15_7b_baseline)
-labels=(qwen15_7b_baseline)
+####### mixture rate exp
+baseline_mixture_02=/home/lt/ReNewPoNe/framework/save/baseline_mixture_rate_02/iter_8620_merge_hf
+baseline_mixture_04=/home/lt/ReNewPoNe/framework/save/baseline_mixture_rate_04/iter_8484_merge_hf
+baseline_mixture_06=/home/lt/ReNewPoNe/framework/save/baseline_mixture_rate_06/iter_8508_merge_hf
+baseline_mixture_08=/home/lt/ReNewPoNe/framework/save/baseline_mixture_rate_08/iter_8528_merge_hf
+
+models=($baseline_mixture_02 $baseline_mixture_04 $baseline_mixture_06 $baseline_mixture_08)
+labels=(baseline_mixture_02 baseline_mixture_04 baseline_mixture_06 baseline_mixture_08)
+
+###### test num exp
+baseline_test_num_200=/home/lt/ReNewPoNe/framework/save/baseline_test_num_200_iter_0/iter_8624_merge_hf
+baseline_test_num_800=/home/lt/ReNewPoNe/framework/save/baseline_test_num_800_iter_0/iter_8554_merge_hf
+baseline_test_num_1000=/home/lt/ReNewPoNe/framework/save/baseline_test_num_1000_iter_0/iter_8532_merge_hf
+models=($baseline_test_num_200 $baseline_test_num_800 $baseline_test_num_1000)
+labels=(baseline_test_num_200 baseline_test_num_800 baseline_test_num_1000)
+
+###### train num exp
+baseline_train_num_200=/home/lt/ReNewPoNe/framework/save/baseline_train_num_200_iter_0/iter_6050_merge_hf
+baseline_train_num_400=/home/lt/ReNewPoNe/framework/save/baseline_train_num_400_iter_0/iter_6450_merge_hf
+baseline_train_num_1000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_1000_iter_0/iter_7650_merge_hf
+baseline_train_num_4000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_4000_iter_0/iter_12682_merge_hf
+
+models=($baseline_train_num_4000)
+labels=(baseline_train_num_4000)
 
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+0))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    #CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
-    CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev
+    CUDA_VISIBLE_DEVICES=$(($index+0)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
 done

@@ -125,7 +125,7 @@ if __name__ == "__main__":
         num = int(max_base_num * rate)
         overall.extend(random.sample(datasets[key], num))
     with open(f'data/overall_strategy_dis.json', 'w') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(overall, f, ensure_ascii=False, indent=4)
     print(f'[!] overall:', len(overall))
 
     # uniform
@@ -134,5 +134,5 @@ if __name__ == "__main__":
     for key in datasets:
         overall.extend(random.sample(datasets[key], num))
     with open(f'data/overall_strategy_uniform.json', 'w') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(overall, f, ensure_ascii=False, indent=4)
     print(f'[!] overall:', len(overall))
