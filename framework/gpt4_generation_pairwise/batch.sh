@@ -9,15 +9,16 @@
 
 #### paramters
 #root_path=data_ultracm_20250218
-root_path=data_baseline_20250218
+root_path=data_baseline_overall_dis_20250218
 iter_num=0
 test_query_num=100
 gen_num=5
 few_shot_num=3
 # baseline model (before iter_0)
-model_path=/home/lt/ReNewPoNe/pairwise/save/hard_1/iter_3616_merge_hf
+#model_path=/home/lt/ReNewPoNe/pairwise/save/hard_1/iter_3616_merge_hf
+model_path=/home/lt/ReNewPoNe/pairwise/save/overall_dis/iter_3552_merge_hf
 model_bsz=32
-cuda_gpu_index=1
+cuda_gpu_index=7
 # 最好是设置一个 max 一个 min，那个 domain-quality 表现差，这部分的 train-num-each 比例就要大，否则就要少一些
 # 还有设置一个 trainset 数据总量，按照错误比例进行归一化计算每个 domain-quality 的训练数据占比
 train_num_each=10

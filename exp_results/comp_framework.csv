@@ -5,5 +5,11 @@ hard_1,dev,45.33,6.27
 hard_1,test,45.56,
 hard_2,dev,47.78,5.68
 hard_2,test,44.67
+overall_dis(0.5,0.4,0.1),dev,48.22,5.82
+overall_dis(0.5,0.4,0.1),test,46.44,5.56
+comp_baseline_overall_dis_iter_0,dev,46.22,5.80
+comp_baseline_overall_dis_iter_0,test,46.00,5.82
 overall(baseline),dev,46.00,5.46
 overall(baseline),test,44.00,5.38
+comp_baseline_iter_0,dev,47.33,5.51
+comp_baseline_iter_0,test,47.78,5.31

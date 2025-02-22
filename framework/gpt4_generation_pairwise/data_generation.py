@@ -295,7 +295,7 @@ def batch_chat_with_api_train(dataset, output_path):
     for index in tqdm(range(0, len(dataset[cache_num:]), args.bsz)):
         samples_ = dataset[cache_num+index:cache_num+index+args.bsz]
         batch = []
-        for prompt_string, category, quality, index in samples_:
+        for prompt_string, category, quality, _ in samples_:
             batch.append([{'role': 'user', 'content': prompt_string}])
         responses = batch_chat(batch)
         assert len(batch) == len(responses)

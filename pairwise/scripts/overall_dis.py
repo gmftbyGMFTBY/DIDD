@@ -28,7 +28,7 @@ pretrained_model_name_or_path = '/home/lt/NewPoNe/model/internlm2-7b-chat'
 use_varlen_attn = False
 
 # Data
-data_path = 'data/comp_baseline_iter_0_v2.json'
+data_path = 'data/overall_dis.json'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 max_length = 2048
 pack_to_max_length = False
@@ -41,7 +41,7 @@ batch_size = 1  # per_device
 accumulative_counts = 16
 accumulative_counts *= sequence_parallel_size
 dataloader_num_workers = 0
-max_epochs = 2
+max_epochs = 4
 optim_type = AdamW
 lr = 2e-4
 betas = (0.9, 0.999)

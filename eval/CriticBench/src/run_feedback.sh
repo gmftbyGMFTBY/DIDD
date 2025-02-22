@@ -97,12 +97,25 @@ baseline_iter_1_only=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_only/iter
 models=($baseline_iter_1_only)
 labels=(baseline_iter_1_only)
 
+##### domain overall strong and weak 4
+overall_strong_4=/home/lt/ReNewPoNe/domain/save_domain_strategy/overall_strong_4/iter_5448_merge_hf
+overall_weak_4=/home/lt/ReNewPoNe/domain/save_domain_strategy/overall_weak_4/iter_6080_merge_hf
 
-for index in $(seq 0 0)
+models=($overall_strong_4 $overall_weak_4)
+labels=(overall_strong_4 overall_weak_4)
+
+##### response overall v78
+overall_v7=/home/lt/ReNewPoNe/response_quality/save_v7/overall_v7/iter_10350_merge_hf
+overall_v8=/home/lt/ReNewPoNe/response_quality/save_v7/overall_v8/iter_10356_merge_hf
+
+models=($overall_v7 $overall_v8)
+labels=(overall_v7 overall_v8)
+
+for index in $(seq 0 1)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+3))
+    index=$(($index+4))
     echo "Infer $model with $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
 done

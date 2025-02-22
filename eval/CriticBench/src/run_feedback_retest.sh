@@ -89,10 +89,16 @@ baseline_train_num_1000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/b
 baseline_train_num_4000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_train_num_4000/_home_lt_ReNewPoNe_framework_save_baseline_train_num_4000_iter_0_iter_12682_merge_hf/critique/result_02_21_15_12_07.jsonl
 baseline_iter_1_only=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_iter_1_only/_home_lt_ReNewPoNe_framework_save_baseline_iter_1_only_iter_2806_merge_hf/critique/result_02_21_21_50_01.jsonl
 
-files=($baseline_iter_1_only)
-labels=(baseline_iter_1_only)
+domain_overall_strong_4=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_strong_4/_home_lt_ReNewPoNe_domain_save_domain_strategy_overall_strong_4_iter_5448_merge_hf/critique/result_02_22_14_50_25.jsonl
+domain_overall_weak_4=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_weak_4/_home_lt_ReNewPoNe_domain_save_domain_strategy_overall_weak_4_iter_6080_merge_hf/critique/result_02_22_14_47_12.jsonl
 
-for index in $(seq 0 0)
+overall_v7=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_v7/_home_lt_ReNewPoNe_response_quality_save_v7_overall_v7_iter_10350_merge_hf/critique/result_02_22_15_48_17.jsonl
+overall_v8=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_v8/_home_lt_ReNewPoNe_response_quality_save_v7_overall_v8_iter_10356_merge_hf/critique/result_02_22_15_48_45.jsonl
+
+files=($overall_v7 $overall_v8)
+labels=(overall_v7 overall_v8)
+
+for index in $(seq 0 1)
 do
     file=${files[$index]}
     label=${labels[$index]}

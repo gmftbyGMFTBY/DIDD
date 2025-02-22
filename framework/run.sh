@@ -50,7 +50,7 @@ baseline_iter_1_only=scripts/baseline_iter_1.py
 
 comp_baseline_iter_0=scripts/baseline_comp.py
 cfg_files=($comp_baseline_iter_0)
-labels=(comp_baseline_iter_0)
+labels=(comp_baseline_iter_0_v2)
 
 for index in $(seq 0 0)
 do

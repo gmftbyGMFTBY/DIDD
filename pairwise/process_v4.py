@@ -39,13 +39,12 @@ if __name__ == "__main__":
     with open(file) as f:
         data = json.load(f)
 
-    easy, hard_1, hard_2, overall = [], [], [], []
-    overall_dis =  []
-    all_ = []
+    overall =  []
+    easy, hard_1, hard_2 = [], [], []
     for _, value in data.items():
         ex_samples = []
         for mode, sample in value.items():
-            if mode in ['dataset_name', 'key_name']:
+            if 'conv' not in sample:
                 continue
             conv = sample['conv']
             query = sample['query']
@@ -54,36 +53,14 @@ if __name__ == "__main__":
             if opt:
                 if mode == 'low-high':
                     low_score, high_score = new_data[query]['low']['score'], new_data[query]['high']['score']
-                    if low_score <= 3 and high_score >= 7:
-                        easy.append({'conversation': [{'input': ipt, 'output': opt}]})
-                        ex_samples.append(easy[-1])
+                    easy.append({'conversation': [{'input': ipt, 'output': opt}]})
                 elif mode == 'low-medium':
                     low_score, medium_score = new_data[query]['low']['score'], new_data[query]['medium']['score']
-                    if low_score <= 3 and 3 < medium_score < 7:
-                        hard_1.append({'conversation': [{'input': ipt, 'output': opt}]})
-                        ex_samples.append(hard_1[-1])
+                    hard_1.append({'conversation': [{'input': ipt, 'output': opt}]})
                 elif mode == 'medium-high':
                     medium_score, high_score = new_data[query]['medium']['score'], new_data[query]['high']['score']
-                    if 3<= medium_score < 7 and high_score >= 7:
-                        hard_2.append({'conversation': [{'input': ipt, 'output': opt}]})
-                        ex_samples.append(hard_2[-1])
-
-        if len(ex_samples) > 0:
-            choice_sample = np.random.choice(a=ex_samples, p=[1/len(ex_samples) for i in range(len(ex_samples))])
-            overall.append(choice_sample)
-    max_length = max(len(easy), len(hard_1), len(hard_2))
-    rates = [0.1, 0.5, 0.4]
-    overall_dis = random.sample(easy, int(max_length * rates[0])) + random.sample(hard_1, int(max_length * rates[1])) + random.sample(hard_2, int(max_length * rates[2]))
-
-    print(f'[!] {len(easy)}; {len(hard_1)}; {len(hard_2)}; {len(overall)}; {len(overall_dis)}')
-
-    with open('data/easy.json', 'w') as f:
-        json.dump(easy, f, ensure_ascii=False)
-    with open('data/hard_1.json', 'w') as f:
-        json.dump(hard_1, f, ensure_ascii=False)
-    with open('data/hard_2.json', 'w') as f:
-        json.dump(hard_2, f, ensure_ascii=False)
-    with open('data/overall.json', 'w') as f:
-        json.dump(overall, f, ensure_ascii=False)
-    with open('data/overall_dis.json', 'w') as f:
-        json.dump(overall_dis, f, ensure_ascii=False)
+                    hard_2.append({'conversation': [{'input': ipt, 'output': opt}]})
+    overall_random_baseline_5000 = random.sample(easy + hard_1 + hard_2, 5000)
+    print(f'[!] {len(easy)}; {len(hard_1)}; {len(hard_2)}; {len(overall)};')
+    with open('data/baseline_comp_num_5000.json', 'w') as f:
+        json.dump(overall_random_baseline_5000, f, ensure_ascii=False)

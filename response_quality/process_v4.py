@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     print(f"low - {len(d_low)}; medium - {len(d_medium)}; high - {len(d_high)}")
     max_length = max(len(d_low), len(d_medium), len(d_high))
-    rate = [0.3, 0.4, 0.3]
+    rate = [0.5, 0.0, 0.5]
     num_medium, num_low, num_high = int(max_length * rate[1]), int(max_length * rate[0]), int(max_length * rate[-1])
 
     overall = []
@@ -94,6 +94,11 @@ if __name__ == "__main__":
         overall.extend(data)
     print(f'[!] overall:', len(overall))
 
+    with open('data/overall_v8.json', 'w') as f:
+        json.dump(overall, f, ensure_ascii=False, indent=4)
+
+    exit()
+
     new_datasets = []
     for d, file_name in zip([d_medium], ['data/medium_v4.json']):
         data = []
@@ -105,5 +110,3 @@ if __name__ == "__main__":
             json.dump(data, f, ensure_ascii=False, indent=4)
         print(f'[!] {file_name}:', len(data))
 
-    with open('data/overall_v6.json', 'w') as f:
-        json.dump(overall, f, ensure_ascii=False, indent=4)

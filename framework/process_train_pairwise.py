@@ -26,7 +26,7 @@ if __name__ == "__main__":
  
     # 为了只训练iter_1数据
     iter_data = [
-        'gpt4_generation_pairwise/data_baseline_20250218/iter_0/train_set_gn_200_10_fsn_3_mode_mixture_rate_0.6'
+        'gpt4_generation_pairwise/data_baseline_overall_dis_20250218/iter_0/train_set_gn_400_10_fsn_3_mode_mixture_rate_0.6'
     ]
     for iter_path in iter_data:
         for file in os.listdir(iter_path):
@@ -41,5 +41,5 @@ if __name__ == "__main__":
                 conv = {'conversation': [{'input': string, 'output': sample['critique']}]}
                 baseline_data.append(conv)
         print(f'[!] overall baseline data:', len(baseline_data))
-    with open('data/comp_baseline_iter_0.json', 'w') as f:
+    with open('data/comp_baseline_iter_0_v2.json', 'w') as f:
         json.dump(baseline_data, f, ensure_ascii=False, indent=4)
