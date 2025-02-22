@@ -31,7 +31,7 @@ if __name__ == "__main__":
         'functional_writing': 0.05,
         'rewriting': 0.05,
     }
-    raw_quality_dis = {'high': 0.3, 'medium': 0.6, 'low': 0.1}
+    raw_quality_dis = {'low-high': 0.1, 'low-medium': 0.5, 'medium-high': 0.4}
 
     labels, save_category, save_quality, save = [], {}, {}, {}
     for file in os.listdir(f'{args.root_path}/iter_{args.iter_num}/meta_evaluation'):

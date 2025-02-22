@@ -28,7 +28,7 @@ CUDA_VISIBLE_DEVICES=$7 python data_generation.py \
     --gen-num $3 \
     --few-shot-num $4 \
     --bsz 16 \
-    --model-prompt prompts/singlewise_critique.md \
+    --model-prompt prompts/pairwise_critique.md \
     --model-path $5 \
     --model-prediction-name model_prediction \
     --model-bsz $6 \

@@ -3,6 +3,7 @@ baseline,45.75,4.17
 baseline_20250218_iter_0,49.24,5.14
 baseline_20250218_iter_0(mixture_rate=0.6),51.84,5.14
 baseline_20250218_iter_1,52.15,4.75
+baseline_20250218_iter_1(在iter_0上持续训练),50.54,
 baseline_20250218_iter_0_dis_mode_raw,46.73,4.87
 baseline_20250218_iter_0_dis_mode_new,44.54,4.93
 baseline_num_4979,53.49,4.63

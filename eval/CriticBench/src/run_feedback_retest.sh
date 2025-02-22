@@ -87,9 +87,10 @@ baseline_train_num_200=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ba
 baseline_train_num_400=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_train_num_400/_home_lt_ReNewPoNe_framework_save_baseline_train_num_400_iter_0_iter_6450_merge_hf/critique/result_02_21_14_21_53.jsonl
 baseline_train_num_1000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_train_num_1000/_home_lt_ReNewPoNe_framework_save_baseline_train_num_1000_iter_0_iter_7650_merge_hf/critique/result_02_21_14_22_04.jsonl
 baseline_train_num_4000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_train_num_4000/_home_lt_ReNewPoNe_framework_save_baseline_train_num_4000_iter_0_iter_12682_merge_hf/critique/result_02_21_15_12_07.jsonl
+baseline_iter_1_only=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_iter_1_only/_home_lt_ReNewPoNe_framework_save_baseline_iter_1_only_iter_2806_merge_hf/critique/result_02_21_21_50_01.jsonl
 
-files=($baseline_train_num_4000)
-labels=(baseline_train_num_4000)
+files=($baseline_iter_1_only)
+labels=(baseline_iter_1_only)
 
 for index in $(seq 0 0)
 do

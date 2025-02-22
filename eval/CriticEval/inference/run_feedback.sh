@@ -87,13 +87,17 @@ baseline_train_num_400=/home/lt/ReNewPoNe/framework/save/baseline_train_num_400_
 baseline_train_num_1000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_1000_iter_0/iter_7650_merge_hf
 baseline_train_num_4000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_4000_iter_0/iter_12682_merge_hf
 
-models=($baseline_train_num_4000)
-labels=(baseline_train_num_4000)
+####
+baseline_iter_1_only=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_only/iter_2806_merge_hf
+
+models=($baseline_iter_1_only)
+labels=(baseline_iter_1_only)
 
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=$(($index+0)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
+    CUDA_VISIBLE_DEVICES=$(($index+1)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
+    CUDA_VISIBLE_DEVICES=$(($index+2)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
 done

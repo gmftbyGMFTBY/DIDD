@@ -60,7 +60,7 @@ class OpenLLM:
         self.inner_bsz = inner_bsz
 
     def prepare_prompt(self, msg):
-        string = self.prompt.format(conversation=msg[0]['query'], response=msg[0]['response'])
+        string = self.prompt.format(conversation=msg[0]['query'], responsea=msg[0]['responsea'], responseb=msg[0]['responseb'])
         return string
 
     @torch.no_grad()
@@ -92,6 +92,8 @@ class OpenLLM:
 
 def parse_test_set(sample):
     gen = sample[-1]['content']
+    if gen is None:
+        return []
     if 'markdown' in gen:
         samples = re.findall(r'```markdown\n(.+)```', gen, re.DOTALL | re.MULTILINE)
         try:
@@ -106,17 +108,18 @@ def parse_test_set(sample):
     gen_results = []
     for example in examples:
         query = re.findall(r'## Query:(.+)## Response', example, re.DOTALL | re.MULTILINE)
-        response = re.findall(r'## Response:(.+)## Critique', example, re.DOTALL | re.MULTILINE)
+        responsea = re.findall(r'## Response_A:(.+)## Response_B', example, re.DOTALL | re.MULTILINE)
+        responseb = re.findall(r'## Response_B:(.+)## Critique', example, re.DOTALL | re.MULTILINE)
         critique = re.findall(r'## Critique:(.+)', example, re.DOTALL | re.MULTILINE)
-        #critique = re.findall(r'## Critique(.+)', example, re.DOTALL | re.MULTILINE)
         try:
-            assert len(query) == 1 and len(response) == 1 and len(critique) == 1
+            assert len(query) == 1 and len(responsea) == 1 and len(responseb) == 1 and len(critique) == 1
         except:
             continue
-        query, response, critique = query[0], response[0], critique[0]
+        query, responsea, responseb, critique = query[0], responsea[0], responseb[0], critique[0]
         gen_results.append({
             'query': query,
-            'response': response,
+            'responsea': responsea,
+            'responseb': responseb,
             'critique': critique
         })
     return gen_results
@@ -128,11 +131,11 @@ def remove_labels(string):
 
 
 def packup_examples(examples):
-    prompt_string = '''# 样例 {index}\n## Query: {query}\n## Response: {response}'''
+    prompt_string = '''# 样例 {index}\n## Query: {query}\n## Response A: {responsea}\n## Response B: {responseb}'''
     strings = []
     for index, example in enumerate(examples):
         ipt = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in example['input']]) + ' [end of conversation]'
-        example_string = prompt_string.format(query=ipt, response=remove_labels(example['response']), index=index)
+        example_string = prompt_string.format(query=ipt, responsea=remove_labels(example['responsea']), responseb=remove_labels(example['responseb']), index=index)
         strings.append(example_string)
     return '\n'.join(strings)
 
@@ -158,9 +161,12 @@ def generate_train_data(few_shot, domain_dis, quality_dis):
         quality_ = choose(qualities, quality_dis)
         selected_qualities.append(quality_)
         selected_domains.append(domain_)
-        samples = few_shot[domain_][quality_]
-        examples = random.sample(samples, min(args.few_shot_num, len(samples)))
-        reference = packup_examples(examples)
+        if quality_ in few_shot[domain_]:
+            samples = few_shot[domain_][quality_]
+            examples = random.sample(samples, min(args.few_shot_num, len(samples)))
+            reference = packup_examples(examples)
+        else:
+            reference = ''
         for index in range(base_ratio):
             prompt_string = prompt.format(
                 responsequality=quality_,
@@ -208,11 +214,11 @@ def generate_test_data(few_shot):
 
     def choose_quality(random_num):
         if 0 <= random_num < 0.1:
-            return 'low'
-        elif 0.1 <= random_num < 0.7:
-            return 'medium'
+            return 'low-high'
+        elif 0.1 <= random_num < 0.6:
+            return 'low-medium'
         else:
-            return 'high'
+            return 'medium-high'
 
     random.seed(args.random_seed)
     dataset = []
@@ -229,7 +235,7 @@ def generate_test_data(few_shot):
         'functional_writing': 0.05,
         'rewriting': 0.05,
     }
-    quality_dis = {'high': 0.3, 'medium': 0.6, 'low': 0.1}
+    quality_dis = {'easy': 0.1, 'hard_1': 0.5, 'hard_2': 0.4}
     assert sum(domain_dis.values()) == 1
     selected_domains, selected_qualities = [], []
     for _ in range(args.test_query_num):
@@ -238,9 +244,12 @@ def generate_test_data(few_shot):
         quality_ = choose_quality(random_b)
         selected_qualities.append(quality_)
         selected_domains.append(domain_)
-        samples = few_shot[domain_][quality_]
-        examples = random.sample(samples, min(args.few_shot_num, len(samples)))
-        reference = packup_examples(examples)
+        if quality_ in few_shot:
+            samples = few_shot[domain_][quality_]
+            examples = random.sample(samples, min(args.few_shot_num, len(samples)))
+            reference = packup_examples(examples)
+        else:
+            reference = ''
         prompt_string = prompt.format(
             responsequality=quality_,
             domain=domain_,
@@ -340,7 +349,7 @@ def batch_chat_with_api_meta_evaluation(dataset, output_path, prompt_temp):
     for index in tqdm(range(0, len(dataset[cache_num:]), args.bsz)):
         samples_ = dataset[cache_num+index:cache_num+index+args.bsz]
         # make the prompt_string
-        prompt_strings = [prompt_temp.format(query=sample_['raw_data']['query'], response=sample_['raw_data']['response'], critique=sample_['raw_data']['critique'], predictioncritique=sample_['prediction']) for sample_ in samples_]
+        prompt_strings = [prompt_temp.format(query=sample_['raw_data']['query'], responsea=sample_['raw_data']['responsea'], responseb=sample_['raw_data']['responseb'], critique=sample_['raw_data']['critique'], predictioncritique=sample_['prediction']) for sample_ in samples_]
 
         batch = []
         for prompt_string in prompt_strings:
@@ -355,7 +364,7 @@ def batch_chat_with_api_meta_evaluation(dataset, output_path, prompt_temp):
 
 
 if __name__ == "__main__":
-    prompt = open('prompts/data_generation_v2.md').read()
+    prompt = open('prompts/data_generation_v2_pairwise.md').read()
     few_shot = json.load(open('new_few_shot.json'))
     few_shot_detail = json.load(open('few_shot_detail_v2.json'))
 
@@ -399,7 +408,7 @@ if __name__ == "__main__":
         with open(save_path, 'w') as f:
             json.dump(gen_results, f, ensure_ascii=False, indent=4)
     elif args.mode == 'meta_evaluate':
-        prompt_template = open('prompts/meta_evaluation.md').read()
+        prompt_template = open('prompts/meta_evaluation_pairwise.md').read()
         save_path =  f'{args.root_path}/iter_{args.iter_num}/{args.model_prediction_name}.json'
         model_prediction = json.load(open(save_path))
         if os.path.exists(os.path.join(args.root_path, f'iter_{args.iter_num}', 'meta_evaluation')) is False:

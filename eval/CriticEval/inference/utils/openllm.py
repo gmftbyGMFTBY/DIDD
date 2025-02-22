@@ -65,8 +65,8 @@ class OpenLLM:
         self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
         #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
         #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
-        #self.prompt = open('utils/singlewise_critique.md').read()
-        self.prompt = open('utils/pairwise_critique.md').read()
+        self.prompt = open('utils/singlewise_critique.md').read()
+        #self.prompt = open('utils/pairwise_critique.md').read()
 
     @torch.no_grad()
     def batch_chat(self, msgs, max_new_tokens=2048, set_name=''):

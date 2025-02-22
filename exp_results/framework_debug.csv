@@ -7,6 +7,7 @@ baseline_20250218_iter_0_mixture_0.6,57.80,5.12,70.00
 baseline_20250218_iter_0_dis_mode_raw,54.65,5.01,66.58
 baseline_20250218_iter_0_dis_mode_new,54.14,4.99,65.81
 baseline_20250218_iter_1,54.97,4.54,67.90
+baseline_20250218_iter_1(在iter_0上持续训练),55.54,4.16
 baseline_iter_0,53.87,4.11,32.24
 baseline_iter_0_v2,55.44,4.28,65.11
 autoj_baseline,54.85,3.83,57.89

@@ -92,16 +92,17 @@ baseline_train_num_200=/home/lt/ReNewPoNe/framework/save/baseline_train_num_200_
 baseline_train_num_400=/home/lt/ReNewPoNe/framework/save/baseline_train_num_400_iter_0/iter_6450_merge_hf
 baseline_train_num_1000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_1000_iter_0/iter_7650_merge_hf
 baseline_train_num_4000=/home/lt/ReNewPoNe/framework/save/baseline_train_num_4000_iter_0/iter_12682_merge_hf
+baseline_iter_1_only=/home/lt/ReNewPoNe/framework/save/baseline_iter_1_only/iter_2806_merge_hf
 
-models=($baseline_train_num_4000)
-labels=(baseline_train_num_4000)
+models=($baseline_iter_1_only)
+labels=(baseline_iter_1_only)
 
 
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+2))
+    index=$(($index+3))
     echo "Infer $model with $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
 done

@@ -24,14 +24,11 @@ from xtuner.utils import PROMPT_TEMPLATE, SYSTEM_TEMPLATE
 #                          PART 1  Settings                           #
 #######################################################################
 # Model
-#pretrained_model_name_or_path = '/home/lt/NewPoNe/model/internlm2-7b-chat'
-#pretrained_model_name_or_path = '/home/lt/ReNewPoNe/framework/save/baseline/iter_5650_merge_hf'
-pretrained_model_name_or_path = '/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf'
+pretrained_model_name_or_path = '/home/lt/NewPoNe/model/internlm2-7b-chat'
 use_varlen_attn = False
 
 # Data
-# 只有baseline_iter_1的生成数据，去除Bsaeline数据
-data_path = 'data/baseline_iter_1_only.json'
+data_path = 'data/comp_baseline_iter_0.json'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 max_length = 2048
 pack_to_max_length = False
@@ -46,7 +43,7 @@ accumulative_counts *= sequence_parallel_size
 dataloader_num_workers = 0
 max_epochs = 2
 optim_type = AdamW
-lr = 1e-5
+lr = 2e-4
 betas = (0.9, 0.999)
 weight_decay = 0
 max_norm = 1  # grad clip
