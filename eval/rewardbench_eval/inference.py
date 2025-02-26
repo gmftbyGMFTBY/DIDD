@@ -1,15 +1,9 @@
 from utils import *
 from datasets import load_dataset
 from tqdm import tqdm
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 import transformers
-from vllm import LLM, SamplingParams
-import torch
-from transformers.generation import GenerationConfig
-from transformers import pipeline, LlamaTokenizer, LlamaForCausalLM
 import json
 import os
-import sys
 import ipdb
 import argparse
 
@@ -26,9 +20,6 @@ def parser_args():
 
 if __name__ == "__main__":
     args = vars(parser_args())
-    args['reference'] = eval(args['reference'])
-    args['task'] = eval(args['task'])
-    args['response_1'] = eval(args['response_1'])
     model = OpenLLM(args['model_name'])
     if os.path.exists(args['output_dir']) is False:
         os.makedirs(args['output_dir'])

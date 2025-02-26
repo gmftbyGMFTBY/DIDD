@@ -46,9 +46,9 @@ if __name__ == "__main__":
     subsets = list(set(dataset['subset'])) + [None]
 
     results = [['model_name'] + subsets[:-1] + ['All', 'Error']]
-    results_reversed = [['model_name'] + subsets[:-1] + ['All', 'Error']]
+    #results_reversed = [['model_name'] + subsets[:-1] + ['All', 'Error']]
     overall_scores = []
-    overall_scores_reversed = []
+    #overall_scores_reversed = []
 
     for folder in os.listdir(args['output_dir']):
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         error_counter = 0
         p, p_reversed = [], []
         p.append(folder)
-        p_reversed.append(folder)
+        #p_reversed.append(folder)
 
         for subset in subsets:
 
@@ -89,60 +89,31 @@ if __name__ == "__main__":
             win_num, loss_num = 0, 0
             for index in tqdm(range(len(data))):
                 sample = data[index]
-                d1, d2 = sample['response_1'], sample['response_2']
-                try:
-                    if 'nips' in file_path:
-                        score_d1 = re.findall('Score: (\d+\.\d+)', d1)[0]
-                        score_d2 = re.findall('Score: (\d+\.\d+)', d2)[0]
-                    elif 'autoj' in file_path:
-                        score_d1 = re.findall('\[\[(\d+)\]\]', d1)[0]
-                        score_d2 = re.findall('\[\[(\d+)\]\]', d2)[0]
-                    elif 'ultracm' in file_path:
-                        score_d1 = re.findall('Score: (\d+\.*\d*)', d1)[0]
-                        score_d2 = re.findall('Score: (\d+\.*\d*)', d2)[0]
-                    score_d1, score_d2 = float(score_d1), float(score_d2)
-                except Exception as e:
-                    if subset is None:
-                        error_counter += 1
-                    error += 1
-                    #rest.append(0)
-                    continue
-                if score_d1 == score_d2:
-                    predict = 2
-                    tie_num += 1
-                elif score_d1 > score_d2:
-                    predict = 0
-                    win_num += 1
-                else:
-                    #ipdb.set_trace()
-                    predict = 1
-                    loss_num += 1
-                if predict == 0:
+                evaluation = sample['evaluate']
+                label = re.findall('Label: (A|B)', evaluation)
+                assert len(label) >= 1
+                label = label[-1]
+                if label == 'A':
                     rest.append(1)
                 else:
                     rest.append(0)
-                if predict == 1:
-                    rest_reversed.append(1)
-                else:
-                    rest_reversed.append(0)
-            # print(f'[!] win/tie/loss: {win_num}|{tie_num}|{loss_num}; ERROR {error}; aggreement of model {folder}:', round(np.mean(rest), 4))
             p.append(round(np.mean(rest), 4))
-            p_reversed.append(round(1-np.mean(rest_reversed), 4))
+            #p_reversed.append(round(1-np.mean(rest_reversed), 4))
 
         results.append(p)
-        results_reversed.append(p_reversed)
+        #results_reversed.append(p_reversed)
         metrics = {key: value for key, value in zip(results[0][1:-2], results[-1][1:-2])}
 
-        metrics_reversed = {key: value for key, value in zip(results_reversed[0][1:-2], results_reversed[-1][1:-2])}
+        #metrics_reversed = {key: value for key, value in zip(results_reversed[0][1:-2], results_reversed[-1][1:-2])}
 
         scores = calculate_scores_per_section(metrics)
         scores['Overall'] = np.mean(list(scores.values()))
-        scores_reversed = calculate_scores_per_section(metrics_reversed)
-        scores_reversed['Overall'] = np.mean(list(scores_reversed.values()))
+        #scores_reversed = calculate_scores_per_section(metrics_reversed)
+        #scores_reversed['Overall'] = np.mean(list(scores_reversed.values()))
         scores['Error'] = error_counter
-        scores_reversed['Error'] = error_counter
+        #scores_reversed['Error'] = error_counter
         overall_scores.append(scores)
-        overall_scores_reversed.append(scores_reversed)
+        #overall_scores_reversed.append(scores_reversed)
 
     final_rest = [['Model'] + list(overall_scores[0].keys())]
     assert len(overall_scores) == len(results) - 1
@@ -153,11 +124,11 @@ if __name__ == "__main__":
         final_rest[-1].append(item['Overall'])
     print(tabulate(final_rest, tablefmt='simple'))
 
-    final_rest = [['Model'] + list(overall_scores_reversed[0].keys())]
-    assert len(overall_scores_reversed) == len(results_reversed) - 1
-    for item, aa in zip(overall_scores_reversed, results_reversed[1:]):
-        final_rest.append([aa[0]])
-        for key in final_rest[0][1:]:
-            final_rest[-1].append(item[key])
-        final_rest[-1].append(item['Overall'])
-    print(tabulate(final_rest, tablefmt='simple'))
+    #final_rest = [['Model'] + list(overall_scores_reversed[0].keys())]
+    #assert len(overall_scores_reversed) == len(results_reversed) - 1
+    #for item, aa in zip(overall_scores_reversed, results_reversed[1:]):
+    #    final_rest.append([aa[0]])
+    #    for key in final_rest[0][1:]:
+    #        final_rest[-1].append(item[key])
+    #    final_rest[-1].append(item['Overall'])
+    #print(tabulate(final_rest, tablefmt='simple'))

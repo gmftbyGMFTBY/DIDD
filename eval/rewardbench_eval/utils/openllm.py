@@ -4,9 +4,9 @@ from lmdeploy.serve.openai.api_client import APIClient
 from lmdeploy import pipeline, GenerationConfig, PytorchEngineConfig, ChatTemplateConfig
 
 
-def prepare_prompt_comp(prompt, item):
-    conversation = f'[begin of conversation] user: {item["prompt"]} [end of conversation]'
-    ipt = prompt.format(conversation=conversation, responsea=item['chosen'], responseb=item['rejected'])
+def prepare_prompt_comp(prompt, prompt_, chosen, reject):
+    conversation = f'[begin of conversation] user: {prompt_} [end of conversation]'
+    ipt = prompt.format(conversation=conversation, responsea=chosen, responseb=reject)
     return [{'role': 'user', 'content': ipt}]
 
 
@@ -31,7 +31,10 @@ class OpenLLM:
         pbar = tqdm(total=len(msgs))
         outputs = []
         while index < len(msgs):
-            msgs_ = [prepare_prompt_comp(self.prompt, sample) for sample in msgs[index:index+bsz]]
+            prompts = msgs[index:index+bsz]['prompt']
+            chosens = msgs[index:index+bsz]['chosen']
+            rejects = msgs[index:index+bsz]['rejected']
+            msgs_ = [prepare_prompt_comp(self.prompt, prompt, chosen, reject) for prompt, chosen, reject in zip(prompts, chosens, rejects)]
             responses = self.pipe(msgs_, gen_config=self.gen_config)
             responses = [response.text for response in responses]
             outputs.extend(responses)

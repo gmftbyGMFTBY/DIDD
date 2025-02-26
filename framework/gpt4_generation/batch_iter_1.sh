@@ -20,7 +20,7 @@ few_shot_num=3
 model_path=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
 #model_path=/home/lt/ReNewPoNe/baseline/save/ultracm_ours/iter_3980_merge_hf
 model_bsz=32
-cuda_gpu_index=1
+cuda_gpu_index=3
 # 最好是设置一个 max 一个 min，那个 domain-quality 表现差，这部分的 train-num-each 比例就要大，否则就要少一些
 # 还有设置一个 trainset 数据总量，按照错误比例进行归一化计算每个 domain-quality 的训练数据占比
 train_num_each=10
