@@ -111,11 +111,24 @@ overall_v8=/home/lt/ReNewPoNe/response_quality/save_v7/overall_v8/iter_10356_mer
 models=($overall_v7 $overall_v8)
 labels=(overall_v7 overall_v8)
 
-for index in $(seq 0 1)
+###### baseline scaling training num
+baseline_1000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_1000/iter_1866_merge_hf
+baseline_2000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_2000/iter_3786_merge_hf
+baseline_4000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_4000/iter_7504_merge_hf
+baseline_7000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_7000/iter_6557_merge_hf
+baseline_8000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_8000/iter_7488_merge_hf
+
+##
+llama3_8b_baseline_large=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline_large/iter_6022_merge_hf
+ultracm_large_5000=/home/lt/ReNewPoNe/baseline/save/ultracm_large_5000/iter_9946_merge_hf
+models=($ultracm_large_5000)
+labels=(ultracm_large_5000)
+
+for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+4))
+    index=$(($index+0))
     echo "Infer $model with $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
 done

@@ -28,7 +28,9 @@ pretrained_model_name_or_path = '/home/lt/models--meta-llama--Meta-Llama-3-8B-In
 use_varlen_attn = False
 
 # Data
-data_path = 'data/baseline.json'
+#data_path = 'data/baseline_num_6382.json'
+#data_path = 'data/comp_new_resquality_dis_from_hard_2.json'
+data_path = 'data/hard2_balance_ab_20250225.json'
 prompt_template = PROMPT_TEMPLATE.llama3_chat
 max_length = 2048
 pack_to_max_length = False

@@ -98,14 +98,48 @@ overall_weak_4=/home/lt/ReNewPoNe/domain/save_domain_strategy/overall_weak_4/ite
 overall_v7=/home/lt/ReNewPoNe/response_quality/save_v7/overall_v7/iter_10350_merge_hf
 overall_v8=/home/lt/ReNewPoNe/response_quality/save_v7/overall_v8/iter_10356_merge_hf
 
-models=($overall_v7 $overall_v8)
-labels=(overall_v7 overall_v8)
+###### baseline scaling training num
+baseline_1000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_1000/iter_1866_merge_hf
+baseline_2000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_2000/iter_3786_merge_hf
+baseline_4000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_4000/iter_7504_merge_hf
+baseline_7000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_7000/iter_6557_merge_hf
+baseline_8000=/home/lt/ReNewPoNe/response_quality/save_baseline/baseline_8000/iter_7488_merge_hf
 
-for index in $(seq 0 1)
+models=($baseline_1000 $baseline_2000 $baseline_4000 $baseline_7000 $baseline_8000)
+labels=(baseline_1000 baseline_2000 baseline_4000 baseline_7000 baseline_8000)
+
+#### base models
+internlm2=/home/lt/NewPoNe/model/internlm2-7b-chat
+llama3=/home/lt/models--meta-llama--Meta-Llama-3-8B-Instruct
+qwen=/home/lt/models/Qwen2-7B-Instruct
+llama3_8b_baseline_large=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline_large/iter_6022_merge_hf
+
+ultracm_large_5000=/home/lt/ReNewPoNe/baseline/save/ultracm_large_5000/iter_9946_merge_hf
+
+models=($ultracm_large_5000)
+labels=(ultracm_large_5000)
+
+###### comp baseline test num
+comp_baseline_test_num_100=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_100/iter_1373_merge_hf
+comp_baseline_test_num_200=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_200/iter_2161_merge_hf
+comp_baseline_test_num_300=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_300/iter_2485_merge_hf
+comp_baseline_test_num_400=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_400/iter_3174_merge_hf
+comp_baseline_test_num_500=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_500/iter_3885_merge_hf
+comp_baseline_test_num_600=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_600/iter_4483_merge_hf
+comp_baseline_test_num_1000=/home/lt/ReNewPoNe/framework/save/baseline_comp_test_num_1000/iter_7051_merge_hf
+
+models=($comp_baseline_test_num_100 $comp_baseline_test_num_200 $comp_baseline_test_num_300 $comp_baseline_test_num_400 $comp_baseline_test_num_500 $comp_baseline_test_num_600 $comp_baseline_test_num_1000)
+
+data_mixture_rate_06_8508_iter_1=/home/lt/ReNewPoNe/framework/save/data_mixture_rate_06_8508_iter_1/iter_1000_merge_hf
+models=($data_mixture_rate_06_8508_iter_1)
+labels=(data_mixture_rate_06_8508_iter_1)
+
+for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+0))
+    index=$(($index+6))
     echo "Inference $model on GPU[$index]; save into save/$label"
     CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
+    CUDA_VISIBLE_DEVICES=$(($index+1)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
 done

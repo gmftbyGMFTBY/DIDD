@@ -17,3 +17,11 @@ baseline_ultracm_iter_0_v2,58.12,3.82
 qwen1_5_7b_baseline,,
 llama3_8b_baseline,48.76,5.17
 llama3_8b_baseline_iter_0,50.67,5.26
+,,
+baseline_num_1000,50.74,5.02
+baseline_num_2000,39.79,4.78
+baseline_num_4000,49.93,5.00
+baseline_num_5000,53.49,4.63
+baseline_num_6000,46.73,4.94
+baseline_num_7000,49.85,4.83
+baseline_num_8000,51.58,4.94

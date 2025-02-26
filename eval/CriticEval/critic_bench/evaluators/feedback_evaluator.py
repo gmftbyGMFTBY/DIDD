@@ -26,7 +26,7 @@ class EvaluateScalarFeedback(BaseEvaluator):
         total_num = 0
         for sample, item in zip(self.predictions, self.samples):
             total_num += 1
-            prediction = sample['prediction']
+            prediction = sample['prediction'].replace('*', '')
             score = parse_score_func(prediction)
             if not score or score > 11:
                 error_num += 1

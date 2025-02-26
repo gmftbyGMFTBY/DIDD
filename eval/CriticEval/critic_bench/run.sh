@@ -9,11 +9,10 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/overall_v8" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/data_mixture_rate_06_8508_iter_1" --batch_size 16 --split $3 --obj True
     else
         echo "Inference Subjective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/overall_v7" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/overall_v8" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_mixture_06" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False
     fi
 elif [ $1 == 'correction' ];
 then
@@ -42,12 +41,10 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Comparison-based Feedback Critique Task"
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/comp_baseline_iter_0_v2" --batch_size 16 --split $3 --obj True
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/data_mixture_rate_06_8508_iter_1" --batch_size 16 --split $3 --obj True
     else
         echo "Inference Subjective Evaluation for Comparison-based Feedback Critique Task"
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/easy" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False
-        #python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/hard_1" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False
-        #python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/hard_2" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/llama3_comp_baseline_new_resquality_from_hard_2" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False
     fi
 elif [ $1 == 'meta_feedback' ];
 then

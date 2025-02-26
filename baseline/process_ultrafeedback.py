@@ -10,7 +10,7 @@ if __name__ == "__main__":
     root_path = '/home/lt/openbmb/UltraFeedback'
     prompt = open('prompts/singlewise_critique.md').read()
     dataset = []
-    sample_num = 2000
+    sample_num = 5000
     for file in os.listdir(root_path):
         if file.endswith('jsonl'):
             path = os.path.join(root_path, file)
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     random.seed(0)
     dataset = random.sample(dataset, sample_num)
 
-    with open('data/ultracm_ours.json', 'w') as f:
+    with open('data/ultracm_ours_5000.json', 'w') as f:
         json.dump(dataset, f, ensure_ascii=False, indent=4)
         print(f'[!] collect {len(dataset)} samples for training')
 

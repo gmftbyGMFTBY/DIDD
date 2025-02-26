@@ -95,10 +95,19 @@ domain_overall_weak_4=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ove
 overall_v7=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_v7/_home_lt_ReNewPoNe_response_quality_save_v7_overall_v7_iter_10350_merge_hf/critique/result_02_22_15_48_17.jsonl
 overall_v8=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/overall_v8/_home_lt_ReNewPoNe_response_quality_save_v7_overall_v8_iter_10356_merge_hf/critique/result_02_22_15_48_45.jsonl
 
-files=($overall_v7 $overall_v8)
-labels=(overall_v7 overall_v8)
+baseline_1000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_1000/_home_lt_ReNewPoNe_response_quality_save_baseline_baseline_1000_iter_1866_merge_hf/critique/result_02_23_22_00_07.jsonl
+baseline_2000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_2000/_home_lt_ReNewPoNe_response_quality_save_baseline_baseline_2000_iter_3786_merge_hf/critique/result_02_23_21_58_27.jsonl
+baseline_4000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_4000/_home_lt_ReNewPoNe_response_quality_save_baseline_baseline_4000_iter_7504_merge_hf/critique/result_02_23_21_57_51.jsonl
+baseline_7000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_7000/_home_lt_ReNewPoNe_response_quality_save_baseline_baseline_7000_iter_6557_merge_hf/critique/result_02_23_21_59_37.jsonl
+baseline_8000=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/baseline_8000/_home_lt_ReNewPoNe_response_quality_save_baseline_baseline_8000_iter_7488_merge_hf/critique/result_02_23_21_58_44.jsonl
 
-for index in $(seq 0 1)
+llama3_8b_baseline_large=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/llama3_8b_baseline_large/_home_lt_ReNewPoNe_framework_save_llama3_8b_baseline_large_iter_6022_merge_hf/critique/result_02_25_00_26_38.jsonl
+ultracm_baseline_large=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ultracm_large_5000/_home_lt_ReNewPoNe_baseline_save_ultracm_large_5000_iter_9946_merge_hf/critique/result_02_25_01_40_09.jsonl
+
+files=($ultracm_baseline_large)
+labels=(ultracm_baseline_large)
+
+for index in $(seq 0 0)
 do
     file=${files[$index]}
     label=${labels[$index]}

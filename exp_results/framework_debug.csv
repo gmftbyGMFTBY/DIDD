@@ -18,3 +18,11 @@ ultracm_baseline_iter_0_v2(>=0.25),58.99,3.79,63.07
 qwen1_5_7b_baseline,,,
 llama3_8b_baseline,51.06,5.19,72.36
 llama3_8b_baseline_iter_0,51.12,5.28,73.30
+,,,
+baseline_1000,54.95,5.03,67.19
+baseline_2000,55.24,4.90,64.76
+baseline_4000,56.18,4.94,69.09
+baseline_5000,55.34,4.61,54.65
+baseline_6000,53.00,4.99,70.56
+baseline_7000,54.27,4.96,68.79
+baseline_8000,53.29,4.85,66.92

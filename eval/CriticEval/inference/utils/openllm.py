@@ -62,11 +62,14 @@ class OpenLLM:
         self.model_name = model_name
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
         self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
-        self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
-        #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
-        #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
-        #self.prompt = open('utils/singlewise_critique.md').read()
-        self.prompt = open('utils/pairwise_critique.md').read()
+        if 'Llama-3' in model_name or 'llama' in model_name:
+            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
+        elif 'Qwen' in model_name:
+            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
+        else:
+            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
+        self.prompt = open('utils/singlewise_critique.md').read()
+        #self.prompt = open('utils/pairwise_critique.md').read()
 
     @torch.no_grad()
     def batch_chat(self, msgs, max_new_tokens=2048, set_name=''):
@@ -92,7 +95,9 @@ class OpenLLM:
         outputs = []
         instruction = instruction_prompts[set_name]
         while index < len(msgs):
-            msgs_ = [[{'role': 'user', 'content': msg['question']}] for msg in msgs[index:index+batch_size]]
+            #msgs_ = [[{'role': 'user', 'content': msg['question']}] for msg in msgs[index:index+batch_size]]
+            msgs_ = [prepare_prompt_comp(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
+            #msgs_ = [prepare_prompt(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
             responses = self.pipe(msgs_, gen_config=self.gen_config)
             responses = [response.text for response in responses]
             index += batch_size

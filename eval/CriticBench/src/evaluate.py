@@ -109,8 +109,10 @@ def init_hf_model_with_vllm(model, available_gpus, llm):
     model_path = model
     backend_config = PytorchEngineConfig(session_len=32768, tp=1)
     gen_config = GenerationConfig(temperature=0.0, max_new_tokens=4096)
-    llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
-    #llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
+    if 'llama' in model_path:
+        llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
+    else:
+        llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
     return llm
 
 

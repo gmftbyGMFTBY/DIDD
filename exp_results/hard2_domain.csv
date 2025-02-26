@@ -1,0 +1,17 @@
+model,mode,CriticEval
+nlp_tasks,dev,45.56
+nlp_tasks,test,48.00
+general_communication,dev,41.56
+general_communication,test,44.00
+summarization,dev,43.78
+summarization,test,44.44
+creative_writing,dev,45.11
+creative_writing,test,45.78
+functional_writing,dev,44.00
+functional_writing,test,46.89
+rewriting,dev,44.22
+rewriting,test,46.00
+exam_question,dev,44.67
+exam_question,test,45.78
+code,dev,46.22
+code,test,48.44

@@ -23,14 +23,22 @@ high_vs_low_02=scripts/high_vs_low_0.2.py
 high_vs_low_01=scripts/high_vs_low_0.1.py
 high_vs_low_00=scripts/high_vs_low_0.py
 
-cfg_files=($overall_v7 $overall_v8)
-labels=(overall_v7 overall_v8)
 
-for index in $(seq 0 1)
+###### baseline train num exp
+baseline_1000=scripts/baseline_1000.py
+baseline_2000=scripts/baseline_2000.py
+baseline_4000=scripts/baseline_4000.py
+baseline_7000=scripts/baseline_7000.py
+baseline_8000=scripts/baseline_8000.py
+
+cfg_files=($baseline_1000 $baseline_2000 $baseline_4000 $baseline_7000 $baseline_8000)
+labels=(baseline_1000 baseline_2000 baseline_4000 baseline_7000 baseline_8000)
+
+for index in $(seq 0 4)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    echo "Train $cfg_file with label $label on GPU[1]"
-    index=$(($index+2))
-    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_v7/$label &
+    echo "Train $cfg_file with label $label on GPU[$index]"
+    index=$(($index+0))
+    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_baseline/$label &
 done

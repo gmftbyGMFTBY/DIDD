@@ -31,7 +31,8 @@ use_varlen_attn = False
 
 # Data
 # 只有baseline_iter_1的生成数据，去除Bsaeline数据
-data_path = 'data/baseline_iter_1_only.json'
+#data_path = 'data/baseline_iter_1_only.json'
+data_path = 'data/data_mixture_rate_06_8508_iter_1.json'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 max_length = 2048
 pack_to_max_length = False
@@ -44,9 +45,9 @@ batch_size = 1  # per_device
 accumulative_counts = 16
 accumulative_counts *= sequence_parallel_size
 dataloader_num_workers = 0
-max_epochs = 2
+max_epochs = 1
 optim_type = AdamW
-lr = 1e-5
+lr = 5e-5
 betas = (0.9, 0.999)
 weight_decay = 0
 max_norm = 1  # grad clip

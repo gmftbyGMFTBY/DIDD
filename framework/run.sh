@@ -47,16 +47,36 @@ labels=(baseline_train_num_400_iter_0)
 
 #### 新的迭代试验
 baseline_iter_1_only=scripts/baseline_iter_1.py
-
 comp_baseline_iter_0=scripts/baseline_comp.py
+# llama3-8b large num 6382 samples
+llama3_8b_baseline_large=scripts/llama3_8b_baseline.py
 cfg_files=($comp_baseline_iter_0)
-labels=(comp_baseline_iter_0_v2)
+labels=(comp_baseline_new_resquality_from_hard_2)
+
+###### baseline comp test num
+baseline_comp_test_num_100=scripts/baseline_comp_test_num_100.py
+baseline_comp_test_num_200=scripts/baseline_comp_test_num_200.py
+baseline_comp_test_num_300=scripts/baseline_comp_test_num_300.py
+baseline_comp_test_num_400=scripts/baseline_comp_test_num_400.py
+baseline_comp_test_num_500=scripts/baseline_comp_test_num_500.py
+baseline_comp_test_num_600=scripts/baseline_comp_test_num_600.py
+baseline_comp_test_num_700=scripts/baseline_comp_test_num_700.py
+baseline_comp_test_num_800=scripts/baseline_comp_test_num_800.py
+baseline_comp_test_num_900=scripts/baseline_comp_test_num_900.py
+baseline_comp_test_num_1000=scripts/baseline_comp_test_num_1000.py
+
+
+llama3_8b_0225_balance=scripts/llama3_8b_baseline.py
+baseline_comp_20250225=scripts/baseline_comp_balance.py
+
+cfg_files=($baseline_iter_1_only)
+labels=(data_mixture_rate_06_8508_iter_1)
 
 for index in $(seq 0 0)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+7))
+    index=$(($index+1))
     echo "Train $cfg_file with label $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save/$label &
 done
