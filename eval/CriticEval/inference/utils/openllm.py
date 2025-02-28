@@ -63,13 +63,13 @@ class OpenLLM:
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
         self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
         if 'Llama-3' in model_name or 'llama' in model_name:
-            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
+            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama"))
         elif 'Qwen' in model_name:
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
         else:
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
-        self.prompt = open('utils/singlewise_critique.md').read()
-        #self.prompt = open('utils/pairwise_critique.md').read()
+        #self.prompt = open('utils/singlewise_critique.md').read()
+        self.prompt = open('utils/pairwise_critique.md').read()
 
     @torch.no_grad()
     def batch_chat(self, msgs, max_new_tokens=2048, set_name=''):

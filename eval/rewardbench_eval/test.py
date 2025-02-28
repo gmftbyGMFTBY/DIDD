@@ -36,7 +36,7 @@ def calculate_scores_per_section(metrics):
 
 def parser_args():
     parser = argparse.ArgumentParser(description='train parameters')
-    parser.add_argument('--output_dir', type=str, default='outputs_20240630_resumm_ablation_study')
+    parser.add_argument('--output_dir', type=str, default='outputs')
     return parser.parse_args() 
 
 
@@ -84,18 +84,21 @@ if __name__ == "__main__":
                 continue
 
             rest, rest_reversed = [], []
-            error = 0
             tie_num = 0
             win_num, loss_num = 0, 0
             for index in tqdm(range(len(data))):
                 sample = data[index]
                 evaluation = sample['evaluate']
                 label = re.findall('Label: (A|B)', evaluation)
-                assert len(label) >= 1
-                label = label[-1]
-                if label == 'A':
-                    rest.append(1)
-                else:
+                try:
+                    assert len(label) >= 1
+                    label = label[-1]
+                    if label == 'A':
+                        rest.append(1)
+                    else:
+                        rest.append(0)
+                except:
+                    error_counter += 1
                     rest.append(0)
             p.append(round(np.mean(rest), 4))
             #p_reversed.append(round(1-np.mean(rest_reversed), 4))
@@ -103,6 +106,7 @@ if __name__ == "__main__":
         results.append(p)
         #results_reversed.append(p_reversed)
         metrics = {key: value for key, value in zip(results[0][1:-2], results[-1][1:-2])}
+        print(f'[!] {folder} error counter:', error_counter)
 
         #metrics_reversed = {key: value for key, value in zip(results_reversed[0][1:-2], results_reversed[-1][1:-2])}
 

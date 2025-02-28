@@ -21,7 +21,7 @@ class OpenLLM:
             model_base_name = 'qwen'
         else:
             model_base_name = 'internlm2'
-        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
+        self.gen_config = GenerationConfig(temperature=0.6, max_new_tokens=2048, top_k=50, top_p=0.95)
         self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name=model_base_name))
         self.prompt = open('prompts/pairwise_critique.md').read()
 

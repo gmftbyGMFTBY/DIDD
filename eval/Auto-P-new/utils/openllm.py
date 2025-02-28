@@ -17,7 +17,7 @@ class OpenLLM:
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
 
         if 'llama' in model_name.lower():
-            model_base_name = 'llama3'
+            model_base_name = 'llama'
         elif 'qwen' in model_name.lower():
             model_base_name = 'qwen'
         else:

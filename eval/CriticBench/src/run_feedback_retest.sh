@@ -107,6 +107,13 @@ ultracm_baseline_large=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/ul
 files=($ultracm_baseline_large)
 labels=(ultracm_baseline_large)
 
+##### iter 01
+iter_0=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/iter_0/_home_lt_ReNewPoNe_framework_save_iter_exp_iter_01_only_iter_3914_merge_hf/critique/result_02_27_00_36_24.jsonl
+iter_01=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/iter_01/_home_lt_ReNewPoNe_framework_save_iter_exp_iter_0_only_iter_1950_merge_hf/critique/result_02_27_00_42_27.jsonl
+iter_012=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/iter_012/_home_lt_ReNewPoNe_framework_save_iter_exp_iter_012_only_iter_5864_merge_hf/critique/result_02_27_12_20_48.jsonl
+files=($iter_012)
+labels=(iter_012)
+
 for index in $(seq 0 0)
 do
     file=${files[$index]}

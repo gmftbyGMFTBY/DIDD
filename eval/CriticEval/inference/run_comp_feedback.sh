@@ -53,11 +53,28 @@ data_mixture_rate_06_8508_iter_1=/home/lt/ReNewPoNe/framework/save/data_mixture_
 models=($data_mixture_rate_06_8508_iter_1)
 labels=(data_mixture_rate_06_8508_iter_1)
 
+#### comp_data_llama3_base_Model
+comp_data_llama3_base_model=/home/lt/ReNewPoNe/framework/save/comp_data_llama3_8b/iter_1918_merge_hf
+models=($comp_data_llama3_base_model)
+labels=(comp_data_llama3_base_model)
+
+comp_data_llama3_on_internlm=/home/lt/ReNewPoNe/framework/save/comp_data_llama3_on_interlm/iter_1958_merge_hf
+
+#### comp iter exp
+comp_iter_exp_0_only=/home/lt/ReNewPoNe/framework/save/comp_iter_0_only/iter_1958_merge_hf
+comp_iter_exp_01_only=/home/lt/ReNewPoNe/framework/save/comp_iter_01_only/iter_3928_merge_hf
+comp_iter_exp_012_only=/home/lt/ReNewPoNe/framework/save/comp_iter_012_only/iter_5890_merge_hf
+comp_iter_exp_0_v2_only=/home/lt/ReNewPoNe/framework/save/comp_iter_0_v2_only/iter_1620_merge_hf
+comp_iter_exp_01_v2_only=/home/lt/ReNewPoNe/framework/save/comp_iter_01_v2_only/iter_3324_merge_hf
+comp_iter_exp_012_v2_only=/home/lt/ReNewPoNe/framework/save/comp_iter_012_v2_only/iter_4708_merge_hf
+models=($comp_iter_exp_012_v2_only)
+labels=(comp_iter_exp_012_v2_only)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+6))
+    index=$(($index+2))
     echo "Inference $model on GPU[$index]; save into save/$label"
     CUDA_VISIBLE_DEVICES=$index python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split dev &
     CUDA_VISIBLE_DEVICES=$(($index+1)) python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &

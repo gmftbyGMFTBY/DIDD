@@ -4,6 +4,8 @@ baseline_4979,55.34,4.61,54.65
 baseline_6382,53.0,4.99,70.56
 baseline_20250218_iter_0,57.79,5.13,66.87
 baseline_20250218_iter_0_mixture_0.6,57.80,5.12,70.00
+baseline_iter_0_on_llama3_dataset,dev,54.93,5.22,68.74
+baseline_iter_0_on_llama3_dataset,test,53.70,5.29,68.74
 baseline_20250218_iter_0_dis_mode_raw,54.65,5.01,66.58
 baseline_20250218_iter_0_dis_mode_new,54.14,4.99,65.81
 baseline_20250218_iter_1,54.97,4.54,67.90

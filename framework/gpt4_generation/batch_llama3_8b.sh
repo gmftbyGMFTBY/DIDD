@@ -9,24 +9,25 @@
 
 #### paramters
 #root_path=data_ultracm_20250218
-root_path=data_baseline_llama3_8b_20250218
+root_path=data_llama3_8b_base_model_20250226
 iter_num=0
 test_query_num=100
-gen_num=5
-few_shot_num=3
+gen_num=1
+few_shot_num=2
 #model_path=/home/lt/ReNewPoNe/baseline/save/autoj_ours/iter_3840_merge_hf
 #model_path=/home/lt/ReNewPoNe/framework/save/baseline/iter_5650_merge_hf
 #model_path=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
 #model_path=/home/lt/ReNewPoNe/baseline/save/ultracm_ours/iter_3980_merge_hf
-model_path=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline/iter_5676_merge_hf
+#model_path=/home/lt/ReNewPoNe/framework/save/llama3_8b_baseline/iter_5676_merge_hf
+model_path=/home/lt/models--meta-llama--Meta-Llama-3-8B-Instruct
 model_bsz=32
-cuda_gpu_index=0
+cuda_gpu_index=2
 # 最好是设置一个 max 一个 min，那个 domain-quality 表现差，这部分的 train-num-each 比例就要大，否则就要少一些
 # 还有设置一个 trainset 数据总量，按照错误比例进行归一化计算每个 domain-quality 的训练数据占比
-train_num_each=20
+train_num_each=10
 train_query_num=100 # 100 * 20 = 2000
 mode=mixture
-mixture_rate=0.5 # the mixture weight of new distribution
+mixture_rate=0.8 # the mixture weight of new distribution
 
 # 1. generate test set
 # generate file: {root_path}/iter_{iter_num}/test_set_gn_{gen_num}_fsn_{few_shot_num}

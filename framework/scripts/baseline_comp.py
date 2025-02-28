@@ -29,7 +29,8 @@ use_varlen_attn = False
 
 # Data
 #data_path = 'data/comp_baseline_iter_0_v2.json'
-data_path = 'data/comp_new_resquality_dis_from_hard_2.json'
+#data_path = 'data/comp_new_resquality_dis_from_hard_2.json'
+data_path = 'data/comp_data_llama3_on_internlm.json'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 max_length = 2048
 pack_to_max_length = False

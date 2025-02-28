@@ -10,17 +10,23 @@
 #### paramters
 #root_path=data_ultracm_20250218
 root_path=data_mixture_rate_06_8508_iter_exp_20250226
-iter_num=0
+iter_num=3
 test_query_num=100
 gen_num=5
 few_shot_num=3
 #model_path=/home/lt/ReNewPoNe/framework/save/baseline_mixture_rate_06/iter_8508_merge_hf
 #model_path=/home/lt/ReNewPoNe/baseline/save/autoj_ours/iter_3840_merge_hf
 #model_path=/home/lt/ReNewPoNe/framework/save/baseline/iter_5650_merge_hf
-model_path=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
 #model_path=/home/lt/ReNewPoNe/baseline/save/ultracm_ours/iter_3980_merge_hf
+
+#### iter exp models
+#model_path=/home/lt/ReNewPoNe/framework/save/baseline_20250218/iter_9608_merge_hf
+#model_path=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_0_only/iter_1950_merge_hf
+#model_path=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_01_only/iter_3914_merge_hf
+model_path=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_012_only/iter_5864_merge_hf
+
 model_bsz=32
-cuda_gpu_index=3
+cuda_gpu_index=1
 # 最好是设置一个 max 一个 min，那个 domain-quality 表现差，这部分的 train-num-each 比例就要大，否则就要少一些
 # 还有设置一个 trainset 数据总量，按照错误比例进行归一化计算每个 domain-quality 的训练数据占比
 train_num_each=10

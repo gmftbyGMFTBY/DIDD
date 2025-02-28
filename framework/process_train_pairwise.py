@@ -31,7 +31,17 @@ if __name__ == "__main__":
         #'gpt4_generation_pairwise/data_20250224_new_resquality_dis_from_hard_2/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.5'
         #f'gpt4_generation_pairwise/data_baseline_easy_test_num_20250224_test_num_{num}/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.5'
         #'gpt4_generation_pairwise/data_20250225_hard_2_balance_ab/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.5'
-        'gpt4_generation/data_mixture_rate_06_8508_iter_1/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6'
+        #'gpt4_generation/data_mixture_rate_06_8508_iter_1/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6'
+        #'gpt4_generation_pairwise/data_baseline_20250226_llama3_base_model/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.5'
+        #'gpt4_generation_pairwise/data_baseline_20250227_llama3_data_on_internlm/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.9'
+        #### iter_exp
+        #'gpt4_generation_pairwise/iter_exp_20250227/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4',
+        #'gpt4_generation_pairwise/iter_exp_20250227/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4',
+        #'gpt4_generation_pairwise/iter_exp_20250227/iter_2/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4'
+        #### iter_exp_v2
+        "gpt4_generation_pairwise/iter_exp_20250227_v2/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4",
+        "gpt4_generation_pairwise/iter_exp_20250227_v2/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4",
+        "gpt4_generation_pairwise/iter_exp_20250227_v2/iter_2/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.4"
     ]
     baseline_data = []
     for iter_path in iter_data:
@@ -40,7 +50,6 @@ if __name__ == "__main__":
             sample = json.load(open(path))
             # parse the sample
             gen_sample = parse_test_set(sample)
-            ipdb.set_trace()
             for sample in gen_sample:
                 input = [{'role': 'user', 'content': sample['query']}]
                 ipt = '[begin of conversation] ' + '\n'.join([f'{utterance["role"]}: {utterance["content"]}' for utterance in input]) + ' [end of conversation]'
@@ -48,5 +57,5 @@ if __name__ == "__main__":
                 conv = {'conversation': [{'input': string, 'output': sample['critique']}]}
                 baseline_data.append(conv)
         print(f'[!] overall baseline data:', len(baseline_data))
-    with open(f'data/data_mixture_rate_06_8508_iter_1.json', 'w') as f:
+    with open(f'data/comp_iter_012_v2_only.json', 'w') as f:
         json.dump(baseline_data, f, ensure_ascii=False, indent=4)

@@ -1,0 +1,9 @@
+model,CriticEval_obj_test,CriticEval_sub_test,Auto-P
+baseline,46.44,5.20,76.15
+iter_0,43.33,4.98,75.86
+iter_1,44.00,4.81,77.63
+iter_2,45.33,4.71,77.43
+,,,
+iter_0_v2,46.00,4.78,72.72
+iter_1_v2,49.11,5.05,75.07
+iter_2_v2,46.00,,76.55

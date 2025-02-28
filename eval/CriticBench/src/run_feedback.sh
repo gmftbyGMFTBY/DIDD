@@ -124,11 +124,18 @@ ultracm_large_5000=/home/lt/ReNewPoNe/baseline/save/ultracm_large_5000/iter_9946
 models=($ultracm_large_5000)
 labels=(ultracm_large_5000)
 
+######## iter 01
+iter_0=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_01_only/iter_3914_merge_hf
+iter_01=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_0_only/iter_1950_merge_hf
+iter_012=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_012_only/iter_5864_merge_hf
+models=($iter_012)
+labels=(iter_012)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+0))
+    index=$(($index+5))
     echo "Infer $model with $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
 done

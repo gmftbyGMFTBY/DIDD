@@ -5,4 +5,5 @@
 **/*.json
 **/*.jsonl
 **/*.txt
+**/*.arrow
 !framework/gpt4_generation/few_shot_detail.json

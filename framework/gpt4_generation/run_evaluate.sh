@@ -7,7 +7,8 @@ gen_num=$3
 few_shot_num=$4
 model_path=$5
 model_bsz=$6
-test_query_num=$7
+gpu_index=$7
+test_query_num=$8
 
 echo "[!] hyper-parameters for mode: evaluate"
 echo "[!] root-path: $1"

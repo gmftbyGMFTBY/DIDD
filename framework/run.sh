@@ -69,14 +69,49 @@ baseline_comp_test_num_1000=scripts/baseline_comp_test_num_1000.py
 llama3_8b_0225_balance=scripts/llama3_8b_baseline.py
 baseline_comp_20250225=scripts/baseline_comp_balance.py
 
-cfg_files=($baseline_iter_1_only)
-labels=(data_mixture_rate_06_8508_iter_1)
+#### iter exp
+iter_exp_iter_0_only=scripts/iter_exp_iter_0_only.py
+iter_exp_iter_01_only=scripts/iter_exp_iter_0_only.py
+iter_exp_iter_012_only=scripts/iter_exp_iter_0_only.py
+iter_exp_iter_0123_only=scripts/iter_exp_iter_0_only.py
+
+#### llama3 8b instruct pairwise data
+comp_data_llama3_8b=scripts/llama3_8b_baseline.py
+
+
+#### llama3 pair data on internlm
+comp_data_llama3_on_interlm=scripts/baseline_comp.py
+cfg_files=($iter_exp_iter_0123_only)
+labels=(iter_exp_iter_0123_only)
+
+##### comp iter exp
+comp_iter_0_only=scripts/comp_iter_exp.py
+comp_iter_01_only=scripts/comp_iter_exp.py
+comp_iter_012_only=scripts/comp_iter_exp.py
+
+comp_iter_0_v2_only=scripts/comp_iter_exp.py
+comp_iter_01_v2_only=scripts/comp_iter_exp.py
+comp_iter_012_v2_only=scripts/comp_iter_exp.py
+
+##### comp train num exp
+comp_iter_0_train_num_4000=scripts/comp_iter_0_train_num_4000.py
+comp_iter_0_train_num_2000=scripts/comp_iter_0_train_num_2000.py
+comp_iter_0_train_num_1000=scripts/comp_iter_0_train_num_1000.py
+comp_iter_0_train_num_800=scripts/comp_iter_0_train_num_800.py
+comp_iter_0_train_num_400=scripts/comp_iter_0_train_num_400.py
+comp_iter_0_train_num_200=scripts/comp_iter_0_train_num_200.py
+
+models=($comp_iter_0_train_num_4000 $comp_iter_0_train_num_2000 $comp_iter_0_train_num_1000 $comp_iter_0_train_num_800 $comp_iter_0_train_num_400 $comp_iter_0_train_num_200)
+labels=(comp_iter_0_train_num_4000 comp_iter_0_train_num_2000 comp_iter_0_train_num_1000 comp_iter_0_train_num_800 comp_iter_0_train_num_400 comp_iter_0_train_num_200)
+
+cfg_files=($comp_iter_012_v2_only)
+labels=(comp_iter_012_v2_only)
 
 for index in $(seq 0 0)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+1))
+    index=$(($index+7))
     echo "Train $cfg_file with label $label on GPU[$index]"
     CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save/$label &
 done

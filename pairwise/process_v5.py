@@ -60,6 +60,7 @@ if __name__ == "__main__":
                 elif mode == 'medium-high':
                     medium_score, high_score = new_data[query]['medium']['score'], new_data[query]['high']['score']
                     hard_2.append({'conversation': [{'input': ipt, 'output': opt}]})
+    ipdb.set_trace()
     overall_random_baseline_5000 = random.sample(easy + hard_1 + hard_2, 5000)
     print(f'[!] {len(easy)}; {len(hard_1)}; {len(hard_2)}; {len(overall)};')
     with open('data/baseline_comp_num_5000.json', 'w') as f:

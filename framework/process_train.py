@@ -21,10 +21,11 @@ if __name__ == "__main__":
     random.seed(0)
     prompt = open('prompts/singlewise_critique.md').read()
 
-    baseline_data = json.load(open('data/baseline.json'))
+    #baseline_data = json.load(open('data/baseline.json'))
     #baseline_data = json.load(open('data/ultracm_ours.json'))
     #baseline_data = json.load(open('data/autoj_ours.json'))
     #print(f'[!] baseline data:', len(baseline_data))
+    baseline_data = []
 
 
     # 为了只训练iter_1数据
@@ -33,7 +34,11 @@ if __name__ == "__main__":
         #'gpt4_generation/data_baseline_20250218/iter_0/train_set_gn_20_fsn_3',
         #'gpt4_generation/data_baseline_20250218/iter_1/train_set_gn_20_fsn_3'
         #'gpt4_generation/data_ultracm_20250218/iter_0/train_set_gn_20_fsn_3'
-        'gpt4_generation/data_mixture_rate_06_8508_iter_1/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6'
+        #'gpt4_generation/data_mixture_rate_06_8508_iter_1/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6'
+        'gpt4_generation/data_mixture_rate_06_8508_iter_exp_20250226/iter_0/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6',
+        'gpt4_generation/data_mixture_rate_06_8508_iter_exp_20250226/iter_1/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6',
+        'gpt4_generation/data_mixture_rate_06_8508_iter_exp_20250226/iter_2/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6',
+        'gpt4_generation/data_mixture_rate_06_8508_iter_exp_20250226/iter_3/train_set_gn_100_10_fsn_3_mode_mixture_rate_0.6',
     ]
     for iter_path in iter_data:
         for file in os.listdir(iter_path):
@@ -48,5 +53,5 @@ if __name__ == "__main__":
                 conv = {'conversation': [{'input': string, 'output': sample['critique']}]}
                 baseline_data.append(conv)
         print(f'[!] overall baseline data:', len(baseline_data))
-    with open('data/data_mixture_rate_06_8508_iter_1.json', 'w') as f:
+    with open('data/iter_exp_20250226_iter_0123_only.json', 'w') as f:
         json.dump(baseline_data, f, ensure_ascii=False, indent=4)

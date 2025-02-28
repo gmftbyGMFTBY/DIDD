@@ -134,6 +134,14 @@ data_mixture_rate_06_8508_iter_1=/home/lt/ReNewPoNe/framework/save/data_mixture_
 models=($data_mixture_rate_06_8508_iter_1)
 labels=(data_mixture_rate_06_8508_iter_1)
 
+
+######## iter_exp
+iter_0=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_01_only/iter_3914_merge_hf
+iter_01=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_0_only/iter_1950_merge_hf
+iter_012=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_012_only/iter_5864_merge_hf
+models=($iter_012)
+labels=(iter_012)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}

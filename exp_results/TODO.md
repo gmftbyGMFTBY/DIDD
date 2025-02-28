@@ -4,3 +4,16 @@
 2. domain
 * analysis_*
 * overall
+
+2025-2-26
+
+##### 使用其他模型的生成分佈來訓練模型
+
+1. baselne
+2. other-model: llama3-8b
+3. baseline_20250218_iter_0_mixture_0.6 (internlm2-7b-chat + baseline + 生成數據)
+
+##### iter exp
+../framework/gpt4_generation/batch_iter_1.sh
+
+##### pairwise針對llama3模型
