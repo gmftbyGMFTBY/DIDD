@@ -73,7 +73,8 @@ if __name__ == "__main__":
                 #ipdb.set_trace()
 
             #responses = model.batch_chat_basemodel(prompts, set_name=set_name)
-            responses = model.batch_chat_comp(prompts, set_name=set_name)
+            #responses = model.batch_chat_comp(prompts, set_name=set_name)
+            responses = model.batch_chat_comp_reward_model(prompts, set_name=set_name)
             results = {}
             assert len(dataset['dev']) == len(responses)
             for item, response in zip(dataset['dev'], responses):

@@ -20,11 +20,16 @@ overall_weak_4=scripts/overall_weak_4.py
 cfg_files=($overall_weak_4)
 labels=(overall_weak_4)
 
-for index in $(seq 0 0)
+
+dis=scripts/dis.py
+uniform=scripts/uniform.py
+cfg_files=($dis $uniform)
+labels=(dis uniform)
+
+for index in $(seq 0 1)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+1))
-    echo "Train $cfg_file with label $label on GPU[1]"
-    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_domain_strategy/$label &
+    echo "Train $cfg_file with label $label on GPU[$index]"
+    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_20250322/$label &
 done

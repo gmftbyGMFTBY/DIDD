@@ -52,8 +52,8 @@ if __name__ == "__main__":
 
     for folder in os.listdir(args['output_dir']):
 
-        #if 'reduce_rep' not in folder:
-        #    continue
+        if 'ultracm' not in folder:
+            continue
 
         error_counter = 0
         p, p_reversed = [], []
@@ -89,6 +89,12 @@ if __name__ == "__main__":
             for index in tqdm(range(len(data))):
                 sample = data[index]
                 evaluation = sample['evaluate']
+                ipdb.set_trace()
+                response_a, response_b = evaluation.split('=====\n=====')
+                #if 'the final decision is response 1' in evaluation.lower():
+                #    evaluation = 'Label: A'
+                #else:
+                #    evaluation = 'Label: B'
                 label = re.findall('Label: (A|B)', evaluation)
                 try:
                     assert len(label) >= 1

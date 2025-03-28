@@ -107,11 +107,23 @@ labels=(comp_iter_0_train_num_4000 comp_iter_0_train_num_2000 comp_iter_0_train_
 cfg_files=($comp_iter_012_v2_only)
 labels=(comp_iter_012_v2_only)
 
+
+##### pairwise test num scaling
+pairwise_test_scaling_1000=scripts/pairwise_test_scaling_1000.py
+pairwise_test_scaling_800=scripts/pairwise_test_scaling_800.py
+pairwise_test_scaling_500=scripts/pairwise_test_scaling_500.py
+pairwise_test_scaling_400=scripts/pairwise_test_scaling_400.py
+pairwise_test_scaling_200=scripts/pairwise_test_scaling_200.py
+pairwise_test_scaling_100=scripts/pairwise_test_scaling_100.py
+
+cfg_files=($pairwise_test_scaling_1000 $pairwise_test_scaling_800 $pairwise_test_scaling_500 $pairwise_test_scaling_400 $pairwise_test_scaling_200 $pairwise_test_scaling_100)
+labels=(pairwise_test_scaling_1000 pairwise_test_scaling_800 pairwise_test_scaling_500 pairwise_test_scaling_400 pairwise_test_scaling_200 pairwise_test_scaling_100)
+
 for index in $(seq 0 0)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+7))
+    index=$(($index+3))
     echo "Train $cfg_file with label $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save/$label &
+    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_pairwise_test_num_scaling/$label
 done

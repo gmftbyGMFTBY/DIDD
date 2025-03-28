@@ -114,7 +114,10 @@ iter_012=/home/lt/ReNewPoNe/eval/CriticBench/src/save_framework/iter_012/_home_l
 files=($iter_012)
 labels=(iter_012)
 
-for index in $(seq 0 0)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/save_20250322/dis/_home_lt_ReNewPoNe_domain_save_20250322_dis_iter_11140_merge_hf/critique/result_03_22_23_15_17.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/save_20250322/uniform/_home_lt_ReNewPoNe_domain_save_20250322_uniform_iter_11668_merge_hf/critique/result_03_22_23_21_43.jsonl)
+labels=(dis uniform)
+
+for index in $(seq 0 1)
 do
     file=${files[$index]}
     label=${labels[$index]}

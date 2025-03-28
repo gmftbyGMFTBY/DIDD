@@ -142,12 +142,26 @@ iter_012=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_012_only/iter_5864_merg
 models=($iter_012)
 labels=(iter_012)
 
+models=(skywork-reward-8b)
+labels=(skyword-reward-8b)
+
+models=(internlm2-20b-reward)
+labels=(internlm2-20b-reward)
+
+models=(/home/lt/ReNewPoNe/domain/save_20250322/uniform/iter_11668_merge_hf /home/lt/ReNewPoNe/domain/save_20250322/dis/iter_11140_merge_hf)
+labels=(uniform dis)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+6))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=$index python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
-    CUDA_VISIBLE_DEVICES=$(($index+1)) python feedback_models.py --model_name $model --output_dir save_framework/$label --split test &
+    #CUDA_VISIBLE_DEVICES=0,1 python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
+    #CUDA_VISIBLE_DEVICES=0 python feedback_models.py --model_name $model --output_dir save/$label --split test
+    CUDA_VISIBLE_DEVICES=0 python feedback_models.py --model_name $model --output_dir save/$label --split dev &
+    index=$(($index+1))
+    model=${models[$index]}
+    label=${labels[$index]}
+    echo "Inference $model on GPU[$index]; save into save/$label"
+    CUDA_VISIBLE_DEVICES=1 python feedback_models.py --model_name $model --output_dir save/$label --split dev &
 done

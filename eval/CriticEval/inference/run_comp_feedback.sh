@@ -70,12 +70,17 @@ comp_iter_exp_012_v2_only=/home/lt/ReNewPoNe/framework/save/comp_iter_012_v2_onl
 models=($comp_iter_exp_012_v2_only)
 labels=(comp_iter_exp_012_v2_only)
 
+models=(skywork-reward-8b)
+labels=(skywork-reward-8b)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
     index=$(($index+2))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=$index python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split dev &
-    CUDA_VISIBLE_DEVICES=$(($index+1)) python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &
+    CUDA_VISIBLE_DEVICES=0 python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &
+    model=internlm2-20b-reward
+    label=internlm2-20b-reward
+    CUDA_VISIBLE_DEVICES=1,6 python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &
 done

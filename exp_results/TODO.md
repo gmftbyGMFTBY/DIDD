@@ -17,3 +17,8 @@
 ../framework/gpt4_generation/batch_iter_1.sh
 
 ##### pairwise針對llama3模型
+
+
+#### InternLM2-7B-Chat数据给 Llama3-8B-Instruct
+1. singlewise: data/baseline_iter_0.json
+2. pairwise: data/comp_baseline_iter_0_v2.json

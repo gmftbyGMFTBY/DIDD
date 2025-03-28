@@ -74,6 +74,7 @@ if __name__ == "__main__":
 
             #responses = model.batch_chat_basemodel(prompts, set_name=set_name)
             responses = model.batch_chat(prompts, set_name=set_name)
+            #responses = model.batch_chat_reward_model(prompts, set_name=set_name)
             results = {}
             assert len(dataset['dev']) == len(responses)
             for item, response in zip(dataset['dev'], responses):

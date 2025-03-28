@@ -9,10 +9,11 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/iter_012" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save/dis" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save/uniform" --batch_size 16 --split $3 --obj True
     else
         echo "Inference Subjective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/iter_012" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_mixture_05" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
     fi
 elif [ $1 == 'correction' ];
 then
@@ -41,7 +42,8 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Comparison-based Feedback Critique Task"
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/comp_iter_exp_012_v2_only" --batch_size 16 --split $3 --obj True 
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/skywork-reward-8b" --batch_size 16 --split $3 --obj True 
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/internlm2-20b-reward" --batch_size 16 --split $3 --obj True 
     else
         echo "Inference Subjective Evaluation for Comparison-based Feedback Critique Task"
         python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/comp_iter_exp_012_v2_only" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False &

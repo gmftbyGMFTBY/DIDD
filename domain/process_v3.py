@@ -124,7 +124,7 @@ if __name__ == "__main__":
         rate = scores[key]
         num = int(max_base_num * rate)
         overall.extend(random.sample(datasets[key], num))
-    with open(f'data/overall_strategy_dis.json', 'w') as f:
+    with open(f'data/overall_strategy_dis_20250322.json', 'w') as f:
         json.dump(overall, f, ensure_ascii=False, indent=4)
     print(f'[!] overall:', len(overall))
 
@@ -133,6 +133,6 @@ if __name__ == "__main__":
     num = max_base_num // 8 + 8
     for key in datasets:
         overall.extend(random.sample(datasets[key], num))
-    with open(f'data/overall_strategy_uniform.json', 'w') as f:
+    with open(f'data/overall_strategy_uniform_20250322.json', 'w') as f:
         json.dump(overall, f, ensure_ascii=False, indent=4)
     print(f'[!] overall:', len(overall))

@@ -32,10 +32,17 @@ comp_iter_01_v2=/home/lt/ReNewPoNe/framework/save/comp_iter_01_v2_only/iter_3324
 comp_iter_012_v2=/home/lt/ReNewPoNe/framework/save/comp_iter_012_v2_only/iter_4708_merge_hf
 models=($comp_iter_012_v2)
 
+
+models=(internlm2-20b-reward)
+models=(skywork-reward-8b)
+
 for index in $(seq 0 0)
 do
     path=${models[$index]}
     index=$(($index+7))
     echo "[!] inference $path on GPU[$index]"
-    ./run_one.sh $path $index outputs &
+    path=internlm2-20b-reward
+    ./run_one.sh $path 0,1,6,7 outputs &
+    #path="skywork-reward-8b"
+    #./run_one.sh $path 0 outputs
 done

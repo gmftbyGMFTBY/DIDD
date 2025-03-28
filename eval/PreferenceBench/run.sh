@@ -24,10 +24,13 @@ labels=(comp_iter_exp_0_only)
 comp_data_llama3_on_internlm=/home/lt/ReNewPoNe/framework/save/comp_data_llama3_on_interlm/iter_1958_merge_hf
 models=($comp_data_llama3_on_internlm)
 
+models=(skywork-reward-8b)
+models=(internlm2-20b-reward)
+
 for index in $(seq 0 0)
 do
     path=${models[$index]}
     index=$(($index+1))
     echo "[!] inference $path on GPU[$index]"
-    ./run_one.sh $path $index outputs &
+    ./run_one.sh $path 0,1 outputs
 done

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print('Counter:', len(dataset))
     print(f'[!] >>>>>')
 
-    responses = model.batch_chat(dataset)
+    responses = model.batch_chat_reward_model(dataset)
     assert len(dataset) == len(responses)
     dataset = dataset.add_column('evaluate', responses)
     path = os.path.join(folder_path, f'response_test')

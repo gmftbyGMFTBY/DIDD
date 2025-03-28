@@ -131,12 +131,21 @@ iter_012=/home/lt/ReNewPoNe/framework/save/iter_exp_iter_012_only/iter_5864_merg
 models=($iter_012)
 labels=(iter_012)
 
+models=(/home/lt/ReNewPoNe/domain/save_20250322/uniform/iter_11668_merge_hf /home/lt/ReNewPoNe/domain/save_20250322/dis/iter_11140_merge_hf)
+labels=(uniform dis)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+5))
+    index=$(($index+6))
     echo "Infer $model with $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_framework/$label &
+    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_20250322/$label &
+    index=1
+    model=${models[$index]}
+    label=${labels[$index]}
+    index=$(($index+6))
+    echo "Infer $model with $label on GPU[$index]"
+    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_20250322/$label &
 done
 
