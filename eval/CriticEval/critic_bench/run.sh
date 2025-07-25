@@ -9,11 +9,15 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save/dis" --batch_size 16 --split $3 --obj True
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save/uniform" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_0_5b/" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_0_5b_baseline/" --batch_size 16 --split $3 --obj True
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_0_5b_iter/" --batch_size 16 --split $3 --obj True
     else
         echo "Inference Subjective Evaluation for Feedback Critique Task"
-        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_framework/baseline_mixture_05" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
+        #python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save/llama3_reverse_dis" --evaluation_dir "./framework" --batch_size 16 --split $3 --obj False &
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_3b" --evaluation_dir "./revision_20250715" --batch_size 16 --split $3 --obj False
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_3b_baseline" --evaluation_dir "./revision_20250715" --batch_size 16 --split $3 --obj False
+        python run_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_qwen2_feedback/qwen2_5_3b_iter_0" --evaluation_dir "./revision_20250715" --batch_size 16 --split $3 --obj False
     fi
 elif [ $1 == 'correction' ];
 then
@@ -42,11 +46,14 @@ then
     if [ $2 == "obj" ]; 
     then  
         echo "Inference Objective Evaluation for Comparison-based Feedback Critique Task"
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/skywork-reward-8b" --batch_size 16 --split $3 --obj True 
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/internlm2-20b-reward" --batch_size 16 --split $3 --obj True 
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b/" --batch_size 16 --split $3 --obj True
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b_baseline/" --batch_size 16 --split $3 --obj True
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b_iter_0/" --batch_size 16 --split $3 --obj True
     else
         echo "Inference Subjective Evaluation for Comparison-based Feedback Critique Task"
-        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/save_comp/comp_iter_exp_012_v2_only" --evaluation_dir "save_comp" --batch_size 16 --split $3 --obj False &
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b/" --evaluation_dir "revision_20250715_comp_evaluation_log" --batch_size 16 --split $3 --obj False 
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b_baseline/" --evaluation_dir "revision_20250715_comp_evaluation_log" --batch_size 16 --split $3 --obj False
+        python run_comp_feedback.py --root_dir "../data/CriticBench" --prediction_dir "../inference/revision_20250715_comp/qwen2_5_7b_iter_0/" --evaluation_dir "revision_20250715_comp_evaluation_log" --batch_size 16 --split $3 --obj False
     fi
 elif [ $1 == 'meta_feedback' ];
 then

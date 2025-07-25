@@ -86,9 +86,17 @@ class OpenLLM:
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
         self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
         if 'Llama-3' in model_name or 'llama' in model_name:
-            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama"))
-        elif 'Qwen' in model_name:
+            self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
+        elif 'qwen' in model_name.lower():
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
+        elif model_name == 'internlm2-8b-reward':
+            self.model = AutoModel.from_pretrained(
+                "/home/lt/models/internlm2-1_8b-reward",
+                torch_dtype=torch.float16, 
+                device_map='auto',
+                trust_remote_code=True,
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained("/home/lt/reward_models/internlm/internlm2-20b-reward", trust_remote_code=True)
         elif model_name == 'internlm2-20b-reward':
             self.model = AutoModel.from_pretrained(
                 "/home/lt/reward_models/internlm/internlm2-20b-reward",
@@ -97,6 +105,15 @@ class OpenLLM:
                 trust_remote_code=True,
             )
             self.tokenizer = AutoTokenizer.from_pretrained("/home/lt/reward_models/internlm/internlm2-20b-reward", trust_remote_code=True)
+        elif model_name == 'grm-3b':
+            self.device = "cuda:0"
+            model_name = '/home/lt/models/Ray2333/GRM-Llama3.2-3B-rewardmodel-ft'
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                model_name,
+                torch_dtype=torch.bfloat16,
+                device_map=self.device,
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         elif model_name == 'skywork-reward-8b':
             self.device = "cuda:0"
             model_name = '/home/lt/reward_models/Skywork-Reward-Llama-3.1-8B'
@@ -109,8 +126,8 @@ class OpenLLM:
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
-        self.prompt = open('utils/singlewise_critique.md').read()
-        #self.prompt = open('utils/pairwise_critique.md').read()
+        #self.prompt = open('utils/singlewise_critique.md').read()
+        self.prompt = open('utils/pairwise_critique.md').read()
     
     @torch.no_grad()
     def batch_chat_reward_model(self, msgs, max_new_tokens=2048, set_name=''):
@@ -122,8 +139,21 @@ class OpenLLM:
             msgs_ = [
                 prepare_prompt_reward_model(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]
             ]
-            if self.model_name == 'internlm2-20b-reward':
+            if self.model_name == 'internlm2-20b-reward' or self.model_name == 'internlm2-8b-reward':
                 responses = self.model.get_scores(self.tokenizer, msgs_)
+            elif self.model_name == 'grm-3b':
+                responses = []
+                for msgs_one in msgs_:
+                    conv1_formatted = self.tokenizer.apply_chat_template(msgs_one, tokenize=False)
+                    kwargs = {"padding": 'longest', "truncation": True, "return_tensors": "pt"}
+                    tokens = self.tokenizer.encode_plus(conv1_formatted, **kwargs)
+                    with torch.no_grad():
+                        reward_tensor = self.model(
+                            tokens["input_ids"][0].view(1,-1).to(self.device), 
+                            attention_mask=tokens["attention_mask"][0].view(1,-1).to(self.device)
+                        )[0]
+                        score = reward_tensor.cpu().detach().item()
+                    responses.append(score)
             else:
                 responses = []
                 for msgs_one in msgs_:
@@ -165,8 +195,8 @@ class OpenLLM:
         instruction = instruction_prompts[set_name]
         while index < len(msgs):
             #msgs_ = [[{'role': 'user', 'content': msg['question']}] for msg in msgs[index:index+batch_size]]
-            msgs_ = [prepare_prompt_comp(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
-            #msgs_ = [prepare_prompt(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
+            #msgs_ = [prepare_prompt_comp(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
+            msgs_ = [prepare_prompt(msg, instruction, set_name, self.prompt) for msg in msgs[index:index+batch_size]]
             responses = self.pipe(msgs_, gen_config=self.gen_config)
             responses = [response.text for response in responses]
             index += batch_size
@@ -204,8 +234,21 @@ class OpenLLM:
                 msgs_ = [
                     prepare_prompt_comp_reward_model(msg, instruction, set_name, self.prompt, generation_name) for msg in msgs[index:index+batch_size]
                 ]
-                if self.model_name == 'internlm2-20b-reward':
+                if self.model_name == 'internlm2-20b-reward' or self.model_name == 'internlm2-8b-reward':
                     responses = self.model.get_scores(self.tokenizer, msgs_)
+                elif self.model_name == 'grm-3b':
+                    responses = []
+                    for msgs_one in msgs_:
+                        conv1_formatted = self.tokenizer.apply_chat_template(msgs_one, tokenize=False)
+                        kwargs = {"padding": 'longest', "truncation": True, "return_tensors": "pt"}
+                        tokens = self.tokenizer.encode_plus(conv1_formatted, **kwargs)
+                        with torch.no_grad():
+                            reward_tensor = self.model(
+                                tokens["input_ids"][0].view(1,-1).to(self.device), 
+                                attention_mask=tokens["attention_mask"][0].view(1,-1).to(self.device)
+                            )[0]
+                            score = reward_tensor.cpu().detach().item()
+                        responses.append(score)
                 else:
                     responses = []
                     for msgs_one in msgs_:

@@ -130,9 +130,9 @@ if __name__ == "__main__":
 
     # uniform
     overall = []
-    num = max_base_num // 8 + 8
+    num = max_base_num // 8 + 10
     for key in datasets:
-        overall.extend(random.sample(datasets[key], num))
+        overall.extend(random.sample(datasets[key], min(num, len(datasets[key]))))
     with open(f'data/overall_strategy_uniform_20250322.json', 'w') as f:
         json.dump(overall, f, ensure_ascii=False, indent=4)
     print(f'[!] overall:', len(overall))

@@ -21,7 +21,7 @@ class OpenLLM:
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
 
         if 'llama' in model_name.lower():
-            model_base_name = 'llama'
+            model_base_name = 'llama3'
         elif 'qwen' in model_name.lower():
             model_base_name = 'qwen'
         elif model_name == 'internlm2-20b-reward':
@@ -39,8 +39,8 @@ class OpenLLM:
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             model_base_name = 'internlm2'
-        #self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
-        #self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name=model_base_name))
+        self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
+        self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name=model_base_name))
         self.prompt = open('prompts/pairwise_critique.md').read()
 
     @torch.no_grad()

@@ -62,8 +62,8 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
                 success = True
                 print(f'[!] one try success')
                 rest = completion.choices[0].message.content
-            except:
-                print(f'[!] one try failed')
+            except Exception as e:
+                print(f'[!] one try failed', e)
                 time.sleep(1)
                 sys.stdout.flush()
                 success = True
@@ -76,7 +76,7 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
 
     time_acc = 0
     base_url = 'https://api.ai-gaochao.cn/v1'
-    api_key = '把api key放进来'
+    api_key = 'sk-oI6T9QRH8uD1Yio64eFf81570f094f04A98cC7Eb7b0cB216'
     client = OpenAI(api_key=api_key, base_url=base_url)
     input_data = _prepare_input(payload, temp, max_tokens, llm_name)
     data = generate_single(client, input_data['messages'][0]['content'])

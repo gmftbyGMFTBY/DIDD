@@ -39,11 +39,16 @@ cfg_files=($hard2_rate_01 $hard2_rate_02 $hard2_rate_03 $hard2_rate_04 $hard2_ra
 labels=(hard2_rate_01 hard2_rate_02 hard2_rate_03 hard2_rate_04 hard2_rate_05 hard2_rate_06 hard2_rate_07)
 
 
-for index in $(seq 0 6)
+###### revision 20250715
+cfg_files=(scripts/qwen2_5_0_5b_baseline.py scripts/qwen2_5_1_5b_baseline.py scripts/qwen2_5_3b_baseline.py scripts/qwen2_5_7b_baseline.py)
+labels=(qwen2_5_0_5b_baseline qwen2_5_1_5b_baseline qwen2_5_3b_baseline qwen2_5_7b_baseline)
+
+
+for index in $(seq 3 3)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+1))
+    index=$(($index+3))
     echo "Train $cfg_file with label $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save/$label &
+    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir revision_20250715/$label &
 done

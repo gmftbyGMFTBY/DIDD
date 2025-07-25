@@ -97,6 +97,12 @@ class ResultProcessor:
                     #    clean_pred = True
                     #'''
                     try:
+                        #pred_str = pred_str.replace('_', ' ')
+                        #score = 1
+                        #for word in reversed(pred_str.split()):
+                        #    if word.isnumeric():
+                        #        score = float(word)
+                        #        break
                         scores = re.findall('Score: (\d+.\d+)', pred_str)
                         score = float(scores[-1])
                         scores_.append(score)

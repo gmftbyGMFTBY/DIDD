@@ -116,16 +116,41 @@ labels=(iter_012)
 
 files=(/home/lt/ReNewPoNe/eval/CriticBench/src/save_20250322/dis/_home_lt_ReNewPoNe_domain_save_20250322_dis_iter_11140_merge_hf/critique/result_03_22_23_15_17.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/save_20250322/uniform/_home_lt_ReNewPoNe_domain_save_20250322_uniform_iter_11668_merge_hf/critique/result_03_22_23_21_43.jsonl)
 labels=(dis uniform)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/save_critiquellm_6b/critiquellm/critiquellm/critique/result_03_29_22_16_25.jsonl)
+labels=(critiquellm)
 
-for index in $(seq 0 1)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/save_llama3_reverse_dis/llama3_reverse_dis/_home_lt_ReNewPoNe_framework_save_pairwise_reverse_llama3_8b_baseline_single_reverse_iter_7676_merge_hf/critique/result_04_03_10_38_00.jsonl)
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/save_llama3_reverse_dis/internlm2_reverse_dis/_home_lt_ReNewPoNe_framework_save_pairwise_reverse_internlm2_7b_baseline_single_reverse_iter_7650_merge_hf/critique/result_04_03_14_43_53.jsonl)
+labels=(internlm2_7b_reverse)
+
+##### 20250715 revision
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_0_5b_single_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_0_5b_single_baseline_iter_5678_merge_hf/critique/result_07_15_18_35_42.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_0_5b_iter_0/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_0_5b_iter_0_iter_7678_merge_hf/critique/result_07_15_21_41_14.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_1_5b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_1_5b_single_baseline_iter_5678_merge_hf/critique/result_07_15_22_55_17.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_3b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_3b_single_baseline_iter_5678_merge_hf/critique/result_07_15_23_05_00.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_0_5b_iter_0_v2/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_0_5b_iter_0_v2_iter_7678_merge_hf/critique/result_07_16_08_40_30.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_0_5b/Qwen2.5-0.5B-Instruct/critique/zs-crit-cot_result_07_16_10_03_00.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_1_5b/Qwen2.5-1.5B-Instruct/critique/zs-crit-cot_result_07_16_10_10_16.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_3b/Qwen2.5-3B-Instruct/critique/zs-crit-cot_result_07_16_10_02_44.jsonl)
+#labels=(qwen2_5_0_5b_single_baseline qwen2_5_0_5b_iter_0 qwen2_5_1_5b_single_baseline qwen2_5_3b_single_baseline qwen2_5_0_5b_iter_0_v2 qwen2_5_0_5b qwen2_5_1_5b qwen2_5_3b)
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_1_5b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_1_5b_single_baseline_iter_5678_merge_hf/critique/result_07_15_22_55_17.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_1_5b_iter_0/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_1_5b_iter_0_iter_7678_merge_hf/critique/result_07_16_10_50_26.jsonl)
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_3b/Qwen2.5-3B-Instruct/critique/zs-crit-cot_result_07_16_10_02_44.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_3b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_3b_single_baseline_iter_5678_merge_hf/critique/result_07_15_23_05_00.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_3b_iter_0/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_3b_iter_0_iter_7678_merge_hf/critique/result_07_16_13_27_15.jsonl)
+#labels=(qwen2_5_3b qwen2_5_3b_single_baseline qwen2_5_3b_iter_0)
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_7b_baseline/Qwen2.5-7B-Instruct/critique/zs-crit-cot_result_07_16_14_45_01.jsonl)
+#labels=(qwen2_5_7b)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_7b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_7b_baseline_iter_5678_merge_hf/critique/result_07_16_15_59_02.jsonl)
+labels=(qwen2_5_7b_baseline)
+
+#files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_7b_iter_0/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_7b_iter_0_iter_7678_merge_hf/critique/result_07_16_17_27_23.jsonl)
+#labels=(qwen2_5_7b_iter_0)
+
+labels=(qwen2_5_7b_iter_0)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_single_baseline/qwen2_5_0_5b_iter_0_v2/_home_lt_ReNewPoNe_framework_revision_20250715_save_qwen2_5_0_5b_iter_0_v2_iter_7678_merge_hf/critique/result_07_16_08_40_30.jsonl)
+files=(/home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_qwen2/qwen2_0_5b/_home_lt_Qwen_Qwen2-0.5B-Instruct/critique/result_07_18_16_32_07.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_qwen2/qwen2_0_5b_baseline/_home_lt_ReNewPoNe_framework_revision_20250715_qwen2_qwen2_0_5b_baseline_iter_5678_merge_hf/critique/result_07_18_16_50_12.jsonl /home/lt/ReNewPoNe/eval/CriticBench/src/revision_20250715_qwen2/qwen2_0_5b_iter_0/_home_lt_ReNewPoNe_framework_revision_20250715_qwen2_qwen2_0_5b_iter_0_iter_7678_merge_hf/critique/result_07_18_18_00_13.jsonl)
+labels=(qwen2_0_5b qwen2_0_5b_baseline qwen2_0_5b_iter0)
+
+for index in $(seq 0 2)
 do
     file=${files[$index]}
     label=${labels[$index]}
     python evaluate.py  \
-        --available_gpus 5 \
+        --available_gpus 4 \
         --hf_critic_model $model \
         --tasks Q \
         --prompt_type zs-crit-cot \
         --enable_code_execution \
-        --existed_crit_file $file > log/framework_$label.txt
+        --existed_crit_file $file #> log/framework_$label.txt
 done

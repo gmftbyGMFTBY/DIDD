@@ -118,12 +118,27 @@ pairwise_test_scaling_100=scripts/pairwise_test_scaling_100.py
 
 cfg_files=($pairwise_test_scaling_1000 $pairwise_test_scaling_800 $pairwise_test_scaling_500 $pairwise_test_scaling_400 $pairwise_test_scaling_200 $pairwise_test_scaling_100)
 labels=(pairwise_test_scaling_1000 pairwise_test_scaling_800 pairwise_test_scaling_500 pairwise_test_scaling_400 pairwise_test_scaling_200 pairwise_test_scaling_100)
+cfg_files=(scripts/llama3_8b_baseline_reverse.py)
+labels=(llama3_8b_baseline_reverse)
 
-for index in $(seq 0 0)
+cfg_files=(scripts/llama3_8b_baseline_reverse.py scripts/llama3_8b_baseline_single_reverse.py)
+labels=(llama3_8b_baseline_reverse llama3_8b_baseline_single_reverse)
+
+cfg_files=(scripts/internlm2_7b_baseline_single_reverse.py scripts/internlm2_7b_baseline_reverse.py)
+labels=(internlm2_7b_baseline_single_reverse internlm2_7b_baseline_reverse)
+
+####### revision
+cfg_files=(scripts/qwen2_5_1_5b_baseline.py)
+labels=(qwen2_5_1_5b_iter_0)
+
+cfg_files=(scripts/comp_iter_0_train_num_2000_qwen2.5-0.5b.py scripts/comp_iter_0_train_num_2000_qwen2.5-7b.py)
+labels=(qwen2_5_3b_iter_0 qwen2_5_7b_iter_0)
+
+for index in $(seq 0 1)
 do
     cfg_file=${cfg_files[$index]}
     label=${labels[$index]}
-    index=$(($index+3))
+    index=$(($index+6))
     echo "Train $cfg_file with label $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir save_pairwise_test_num_scaling/$label
+    CUDA_VISIBLE_DEVICES=$index NPROC_PER_NODE=1 xtuner train $cfg_file --work-dir revision_20250715_pairwise_save/$label &
 done

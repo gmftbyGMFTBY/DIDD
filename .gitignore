@@ -7,3 +7,8 @@
 **/*.txt
 **/*.arrow
 !framework/gpt4_generation/few_shot_detail.json
+exp_results/*
+framework/revision_20250715_pairwise_save/*
+framework/revision_20250715_qwen2/*
+framework/revision_20250715_save/*
+pairwise/revision_20250715/*

@@ -27,10 +27,23 @@ models=($comp_data_llama3_on_internlm)
 models=(skywork-reward-8b)
 models=(internlm2-20b-reward)
 
-for index in $(seq 0 0)
+llama3_pairwise_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/llama3_8b_baseline_reverse/iter_1940_merge_hf
+internlm2_pairwise_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/internlm2_7b_baseline_reverse/iter_1908_merge_hf
+models=($internlm2_pairwise_reverse_dis)
+
+
+#### revision 20250715
+models=(/home/lt/Qwen/Qwen2.5-0.5B-Instruct /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_0_5b_baseline/iter_2568_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/pairwise_qwen2.5_0.5b_iter_0/iter_3780_merge_hf)
+
+models=(/home/lt/Qwen/Qwen2.5-1.5B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_1_5b_iter_0/iter_3756_merge_hf /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_1_5b_baseline/iter_2568_merge_hf)
+models=(/home/lt/Qwen/Qwen2.5-3B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_3b_iter_0/iter_3812_merge_hf /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_3b_baseline/iter_2568_merge_hf)
+
+models=(/home/lt/Qwen/Qwen2.5-7B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_7b_baseline/iter_2568_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_7b_iter_0/iter_3896_merge_hf)
+
+for index in $(seq 0 2)
 do
     path=${models[$index]}
-    index=$(($index+1))
+    index=$(($index+5))
     echo "[!] inference $path on GPU[$index]"
-    ./run_one.sh $path 0,1 outputs
+    ./run_one.sh $path $index revision_outputs_7b &
 done

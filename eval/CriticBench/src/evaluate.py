@@ -112,7 +112,8 @@ def init_hf_model_with_vllm(model, available_gpus, llm):
     if 'llama' in model_path:
         llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
     else:
-        llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
+        #llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
+        llm = pipeline(model_path, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="qwen"))
     return llm
 
 

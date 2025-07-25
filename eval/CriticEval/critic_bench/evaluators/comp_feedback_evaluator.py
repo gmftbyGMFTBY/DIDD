@@ -25,7 +25,7 @@ class EvaluateScalarCompFeedback(BaseEvaluator):
         for file_a, file_b, file_c in zip(self.reverse_prediction_path, self.prediction_path, self._file_path):
             if os.path.exists(file_a) is False or os.path.exists(file_b) is False or os.path.exists(file_c) is False:
                 continue
-            with open(file_a) as f:
+            with open(file_a, encoding='utf-8') as f:
                 predictions = json.load(f)
             for key in predictions:
                 self.reverse_predictions[str(index + int(key))] = predictions[key]
@@ -237,7 +237,7 @@ class EvaluateNLCompFeedback(BaseEvaluator):
                     samples.append(deepcopy(sample))
                     if len(cache) % batch_size == 0:
                         rests = batch_chat([{
-                            'model': 'gpt-4-1106-preview',
+                            'model': 'gpt-4o',
                             'messages': [
                                 {
                                     'role': 'user',
@@ -258,7 +258,7 @@ class EvaluateNLCompFeedback(BaseEvaluator):
 
                 if len(cache) > 0:
                     rests = batch_chat([{
-                        'model': 'gpt-4-1106-preview',
+                        'model': 'gpt-4o',
                         'messages': [
                             {
                                 'role': 'user',

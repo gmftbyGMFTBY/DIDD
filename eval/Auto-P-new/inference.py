@@ -35,8 +35,8 @@ if __name__ == "__main__":
     print('Counter:', len(dataset))
     print(f'[!] >>>>>')
 
-    #responses = model.batch_chat(dataset)
-    responses = model.batch_chat_reward_model(dataset)
+    responses = model.batch_chat(dataset)
+    #responses = model.batch_chat_reward_model(dataset)
     for response, data in zip(responses, dataset):
         data['evaluate'] = response 
     path = os.path.join(folder_path, f'result.json')

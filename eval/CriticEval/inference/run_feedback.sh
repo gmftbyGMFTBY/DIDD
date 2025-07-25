@@ -151,17 +151,42 @@ labels=(internlm2-20b-reward)
 models=(/home/lt/ReNewPoNe/domain/save_20250322/uniform/iter_11668_merge_hf /home/lt/ReNewPoNe/domain/save_20250322/dis/iter_11140_merge_hf)
 labels=(uniform dis)
 
-for index in $(seq 0 0)
+models=(internlm2-8b-reward)
+labels=(internlm2-8b-reward)
+
+models=(grm-3b)
+labels=(grm-3b)
+
+#### reverse dis exp
+llama3_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/llama3_8b_baseline_single_reverse/iter_7676_merge_hf
+internlm2_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/internlm2_7b_baseline_single_reverse/iter_7650_merge_hf
+models=($internlm2_reverse_dis)
+labels=(internlm2_reverse_dis)
+
+
+####### revision  20250715
+models=(/home/lt/ReNewPoNe/framework/revision_20250715_qwen2/qwen2_0_5b_baseline/iter_5678_merge_hf /home/lt/Qwen/Qwen2-0.5B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_qwen2/qwen2_0_5b_iter_0/iter_7678_merge_hf)
+labels=(qwen2_0_5b_baseline qwen2_0_5b qwen2_0_5b_iter_0)
+
+
+models=(/home/lt/Qwen/Qwen2.5-0.5B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_0_5b_single_baseline/iter_5678_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_0_5b_iter_0_v2/iter_7678_merge_hf)
+labels=(qwen2_5_0_5b qwen2_5_0_5b_baseline qwen2_5_0_5b_iter)
+
+models=(/home/lt/Qwen/Qwen2.5-1.5B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_1_5b_single_baseline/iter_5678_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_1_5b_iter_0/iter_7678_merge_hf)
+labels=(qwen2_5_1_5b qwen2_5_1_5b_baseline qwen2_5_1_5b_iter_0)
+
+models=(/home/lt/Qwen/Qwen2.5-3B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_3b_single_baseline/iter_5678_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_3b_iter_0/iter_7678_merge_hf)
+labels=(qwen2_5_3b qwen2_5_3b_baseline qwen2_5_3b_iter_0)
+
+#models=(/home/lt/Qwen/Qwen2.5-7B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_7b_baseline/iter_5678_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_7b_iter_0/iter_7678_merge_hf)
+#labels=(qwen2_5_7b qwen2_5_7b_baseline qwen2_5_7b_iter_0)
+
+for index in $(seq 0 2)
 do
     model=${models[$index]}
     label=${labels[$index]}
+    index=$(($index+0))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    #CUDA_VISIBLE_DEVICES=0,1 python feedback_models.py --model_name $model --output_dir save_framework/$label --split dev &
-    #CUDA_VISIBLE_DEVICES=0 python feedback_models.py --model_name $model --output_dir save/$label --split test
-    CUDA_VISIBLE_DEVICES=0 python feedback_models.py --model_name $model --output_dir save/$label --split dev &
-    index=$(($index+1))
-    model=${models[$index]}
-    label=${labels[$index]}
-    echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=1 python feedback_models.py --model_name $model --output_dir save/$label --split dev &
+    #CUDA_VISIBLE_DEVICES=2 python feedback_models.py --model_name $model --output_dir revision_20250715_qwen2_feedback/$label --split dev
+    CUDA_VISIBLE_DEVICES=3 python feedback_models.py --model_name $model --output_dir revision_20250715_qwen2_feedback/$label --split test
 done

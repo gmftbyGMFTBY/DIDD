@@ -70,17 +70,36 @@ comp_iter_exp_012_v2_only=/home/lt/ReNewPoNe/framework/save/comp_iter_012_v2_onl
 models=($comp_iter_exp_012_v2_only)
 labels=(comp_iter_exp_012_v2_only)
 
-models=(skywork-reward-8b)
-labels=(skywork-reward-8b)
+models=(grm-3b)
+labels=(grm-3b)
 
-for index in $(seq 0 0)
+llama3_pairwise_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/llama3_8b_baseline_reverse/iter_1940_merge_hf
+internlm2_pairwise_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/internlm2_7b_baseline_reverse/iter_1908_merge_hf
+models=($internlm2_pairwise_reverse_dis)
+labels=(internlm2_pairwise_reverse_dis)
+
+
+##### revision 20250715
+models=(/home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/pairwise_qwen2.5_0.5b_iter_0/iter_3780_merge_hf /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_0_5b_baseline/iter_2568_merge_hf /home/lt/Qwen/Qwen2.5-0.5B-Instruct)
+labels=(qwen2_5_0.5b_iter_0 qwen2_5_0.5b_baseline qwen2_5_0.5b)
+
+
+models=(/home/lt/Qwen/Qwen2.5-1.5B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_1_5b_iter_0/iter_3756_merge_hf /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_1_5b_baseline/iter_2568_merge_hf)
+labels=(qwen2_5_1.5b qwen2_5_1.5b_iter_0 qwen2_5_1.5b_baseline)
+
+
+models=(/home/lt/Qwen/Qwen2.5-3B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_3b_iter_0/iter_3812_merge_hf /home/lt/ReNewPoNe/pairwise/revision_20250715/qwen2_5_3b_baseline/iter_2568_merge_hf)
+labels=(qwen2_5_3b qwen2_5_3b_iter_0 qwen2_5_3b_baseline)
+
+models=(/home/lt/Qwen/Qwen2.5-7B-Instruct /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_7b_baseline/iter_2568_merge_hf /home/lt/ReNewPoNe/framework/revision_20250715_pairwise_save/qwen2_5_7b_iter_0/iter_3896_merge_hf)
+labels=(qwen2_5_7b qwen2_5_7b_baseline qwen2_5_7b_iter_0)
+
+for index in $(seq 1 2)
 do
     model=${models[$index]}
     label=${labels[$index]}
-    index=$(($index+2))
+    index=$(($index+4))
     echo "Inference $model on GPU[$index]; save into save/$label"
-    CUDA_VISIBLE_DEVICES=0 python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &
-    model=internlm2-20b-reward
-    label=internlm2-20b-reward
-    CUDA_VISIBLE_DEVICES=1,6 python comp_feedback_models.py --model_name $model --output_dir save_comp/$label --split test &
+    #CUDA_VISIBLE_DEVICES=$index python comp_feedback_models.py --model_name $model --output_dir revision_20250715_comp/$label --split dev &
+    CUDA_VISIBLE_DEVICES=$index python comp_feedback_models.py --model_name $model --output_dir revision_20250715_comp/$label --split test &
 done

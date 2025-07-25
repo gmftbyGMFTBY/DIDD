@@ -13,6 +13,7 @@ parser.add_argument("--root-path", default='output')
 parser.add_argument("--mode", default='output')
 parser.add_argument("--mixture-rate", default=0, type=float)
 parser.add_argument("--iter-num", default=0, type=int)
+parser.add_argument("--reverse", default=0, type=int)
 args = parser.parse_args()
 
 
@@ -73,6 +74,18 @@ if __name__ == "__main__":
 
     qualities_dis = {key: value for key, value in qualities_dis}
     domains_dis = {key: value for key, value in domains_dis}
+    
+    if args.reverse == 1:
+        keys = list(domains_dis.keys())
+        domains_dis = [1/domains_dis[key] for key in keys]
+        summ_ = sum(domains_dis)
+        domains_dis = [i/summ_ for i in domains_dis]
+        domains_dis = {k: i for k, i in zip(keys, domains_dis)}
+        keys = list(qualities_dis.keys())
+        qualities_dis = [1/qualities_dis[key] for key in keys]
+        summ_ = sum(qualities_dis)
+        qualities_dis = [i/summ_ for i in qualities_dis]
+        qualities_dis = {k: i for k, i in zip(keys, qualities_dis)}
 
     if args.mode == 'mixture':
         #alpha = 0.5

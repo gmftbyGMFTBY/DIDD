@@ -13,7 +13,7 @@ from datasets import load_from_disk, load_dataset
 
 def parser_args():
     parser = argparse.ArgumentParser(description='train parameters')
-    parser.add_argument('--output_dir', type=str, default='outputs')
+    parser.add_argument('--output_dir', type=str, default='revision_outputs_3b')
     return parser.parse_args() 
 
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
             data = json.load(f)
         predictions = []
         parsing_error = 0
-        for sample in data:
+        for sample in tqdm(data):
             label = sample['label']
             if label == 2:
                 continue

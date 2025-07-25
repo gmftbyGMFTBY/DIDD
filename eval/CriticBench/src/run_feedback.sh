@@ -134,18 +134,39 @@ labels=(iter_012)
 models=(/home/lt/ReNewPoNe/domain/save_20250322/uniform/iter_11668_merge_hf /home/lt/ReNewPoNe/domain/save_20250322/dis/iter_11140_merge_hf)
 labels=(uniform dis)
 
+#### reverse dis exp
+llama3_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/llama3_8b_baseline_single_reverse/iter_7676_merge_hf
+internlm2_reverse_dis=/home/lt/ReNewPoNe/framework/save_pairwise_reverse/internlm2_7b_baseline_single_reverse/iter_7650_merge_hf
+models=($internlm2_reverse_dis)
+labels=(internlm2_reverse_dis)
+
+##### 20250715 revision
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_0_5b_single_baseline/iter_5678_merge_hf)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_0_5b_iter_0/iter_7678_merge_hf)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_1_5b_single_baseline/iter_5678_merge_hf)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_3b_single_baseline/iter_5678_merge_hf)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_0_5b_iter_0_v2/iter_7678_merge_hf)
+#models=(/home/lt/Qwen/Qwen2.5-3B-Instruct)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_1_5b_iter_0/iter_7678_merge_hf)
+#models=(/home/lt/ReNewPoNe/framework/revision_20250715_save/qwen2_5_3b_iter_0/iter_7678_merge_hf)
+#labels=(qwen2_5_3b_iter_0)
+
+models=(/home/lt/Qwen/Qwen2-0.5B-Instruct)
+labels=(qwen2_0_5b)
+
+models=(/home/lt/ReNewPoNe/framework/revision_20250715_qwen2/qwen2_0_5b_baseline/iter_5678_merge_hf)
+labels=(qwen2_0_5b_baseline)
+
+models=(/home/lt/ReNewPoNe/framework/revision_20250715_qwen2/qwen2_0_5b_iter_0/iter_7678_merge_hf)
+labels=(qwen2_0_5b_iter_0)
+
 for index in $(seq 0 0)
 do
     model=${models[$index]}
     label=${labels[$index]}
     index=$(($index+6))
     echo "Infer $model with $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_20250322/$label &
-    index=1
-    model=${models[$index]}
-    label=${labels[$index]}
-    index=$(($index+6))
-    echo "Infer $model with $label on GPU[$index]"
-    CUDA_VISIBLE_DEVICES=$index python evaluate.py --available_gpus $index --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir save_20250322/$label &
+    CUDA_VISIBLE_DEVICES=2 python evaluate.py --available_gpus 2 --tasks Q --hf_critic_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir revision_20250715_qwen2/$label
+    #CUDA_VISIBLE_DEVICES=5 python evaluate.py --available_gpus 5 --tasks Q --hf_model $model --prompt_type zs-crit-cot --enable_code_execution --output_dir revision_20250715_single_baseline/$label &
 done
 

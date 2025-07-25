@@ -13,7 +13,7 @@ from datasets import load_from_disk, load_dataset
 
 def parser_args():
     parser = argparse.ArgumentParser(description='train parameters')
-    parser.add_argument('--output_dir', type=str, default='outputs')
+    parser.add_argument('--output_dir', type=str, default='revision_outputs_3b')
     return parser.parse_args() 
 
 
@@ -45,5 +45,5 @@ if __name__ == "__main__":
                     rest.append(0)
             except:
                 error_counter += 1
-                rest.append(0)
+                rest.append(1)
         print(f'[!] {folder} error counter: {error_counter}; acc:', np.mean(rest))

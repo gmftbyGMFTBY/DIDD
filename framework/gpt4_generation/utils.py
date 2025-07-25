@@ -58,7 +58,8 @@ def _chat_one_session_personal(payload, sleep_time, retry_num, temp, max_tokens,
 
     time_acc = 0
     base_url = 'https://api.ai-gaochao.cn/v1'
-    api_key = 'sk-e6Inw8EfZoi7sOE4A6De1d392f5e43Bd9299843d9333Ee49'
+    #api_key = 'sk-e6Inw8EfZoi7sOE4A6De1d392f5e43Bd9299843d9333Ee49'
+    api_key = 'sk-oI6T9QRH8uD1Yio64eFf81570f094f04A98cC7Eb7b0cB216'
     client = OpenAI(api_key=api_key, base_url=base_url)
     data = generate_single(client, payload, llm_name)
     response = data['generation']

@@ -52,7 +52,7 @@ class OpenLLM:
         self.model_name = model_name
         backend_config = PytorchEngineConfig(session_len=32768, tp=1)
         self.gen_config = GenerationConfig(temperature=0.0, max_new_tokens=2048)
-        if 'llama3' in model_name:
+        if 'llama3' in model_name.lower():
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="llama3"))
         else:
             self.pipe = pipeline(model_name, backend_config=backend_config, chat_template_config=ChatTemplateConfig(model_name="internlm2"))
