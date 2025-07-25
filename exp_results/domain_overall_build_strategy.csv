@@ -1,5 +1,0 @@
-Model,Mode,CriticEval_obj,CriticEval_sub,CriticBench
-overall_dis,dev,37.81,3.74,
-overall_dis,test,37.61,3.66,
-overall_uniform,dev,38.27,3.68,
-overall_uniform,test,32.36,3.53,
